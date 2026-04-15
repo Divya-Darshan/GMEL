@@ -1,32 +1,15 @@
 [gd_scene format=3 uid="uid://bstqchy3h1m6o"]
 
-[ext_resource type="Texture2D" uid="uid://dsaxshjb04p66" path="res://icon.svg" id="1_fj7yv"]
-[ext_resource type="Texture2D" uid="uid://0anuasaususa" path="res://vector-rpg-character-template/Individual Animations/crouch-1.svg" id="2_tlwt5"]
-[ext_resource type="Texture2D" uid="uid://cybogw7dillih" path="res://vector-rpg-character-template/Individual Animations/crouch-1_64.png" id="4_036b0"]
-[ext_resource type="Texture2D" uid="uid://d3nfn3dq4f81b" path="res://vector-rpg-character-template/Individual Animations/idle-1_256.png" id="4_aqk2v"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_036b0"]
-load_path = "res://.godot/imported/idle-1.svg-f9e5ccfeddbd682e7dcf57cfbf618d6a.ctex"
+[ext_resource type="Texture2D" uid="uid://bmboy8pjs705x" path="res://icon.svg" id="1_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://d3nfn3dq4f81b" path="res://char/idle-1_256.png" id="2_fj7yv"]
 
 [node name="world" type="Node2D" unique_id=1537951377]
 
-[node name="Icon" type="Sprite2D" parent="." unique_id=815051513]
-position = Vector2(184, 337)
+[node name="Icon" type="Sprite2D" parent="." unique_id=2127070069]
+position = Vector2(520, 379)
 texture = ExtResource("1_fj7yv")
 
-[node name="Idle1" type="Sprite2D" parent="." unique_id=811757640]
-position = Vector2(343, 358)
-texture = SubResource("CompressedTexture2D_036b0")
-
-[node name="Crouch1" type="Sprite2D" parent="." unique_id=1291914501]
-position = Vector2(329, 395)
-texture = ExtResource("2_tlwt5")
-
-[node name="Crouch164" type="Sprite2D" parent="." unique_id=1535505738]
-position = Vector2(556, 274)
-scale = Vector2(0.3487392, 0.3487392)
-texture = ExtResource("4_036b0")
-
-[node name="Idle1256" type="Sprite2D" parent="." unique_id=640858605]
-position = Vector2(450, 272)
-texture = ExtResource("4_aqk2v")
+[node name="Idle1256" type="Sprite2D" parent="." unique_id=481562210]
+position = Vector2(579, 193)
+scale = Vector2(0.28414887, 0.28414887)
+texture = ExtResource("2_fj7yv")
