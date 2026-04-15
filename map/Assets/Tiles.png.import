@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dd1yxwf7sctte"
-path="res://.godot/imported/Tiles.png-94bab686d0b25064df2d651c9e4c591a.ctex"
+path="res://.godot/imported/Tiles.png-fea079a83ab81ca990cfd177868d811b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sidescroller Shooter - Central City/Sidescroller Shooter - Central City/Assets/Tiles.png"
-dest_files=["res://.godot/imported/Tiles.png-94bab686d0b25064df2d651c9e4c591a.ctex"]
+source_file="res://map/Assets/Tiles.png"
+dest_files=["res://.godot/imported/Tiles.png-fea079a83ab81ca990cfd177868d811b.ctex"]
 
 [params]
 
