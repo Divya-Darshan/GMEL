@@ -1,169 +1,19 @@
 [gd_scene format=3 uid="uid://bstqchy3h1m6o"]
 
-[ext_resource type="Texture2D" uid="uid://dfg4plcknq4sa" path="res://char/idle-2_256.png" id="1_f3sb7"]
-[ext_resource type="Texture2D" uid="uid://bmkdytquedmrj" path="res://char/walk-2_256.png" id="2_fj7yv"]
-[ext_resource type="Texture2D" uid="uid://ceq8btvfim8hi" path="res://char/jump-2_256.png" id="2_tlwt5"]
-
-[sub_resource type="GDScript" id="GDScript_fj7yv"]
-script/source = "extends CharacterBody2D
-
-const MAX_SPEED: float = 300.0
-const ACCEL: float = 1200.0
-const FRICTION: float = 1000.0
-const AIR_ACCEL: float = 600.0
-
-const JUMP_VELOCITY: float = -420.0
-const GRAVITY: float = 1200.0
-const FALL_GRAVITY: float = 1800.0
-
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-
-var current_animation: String = \"idle\"
-var was_on_floor: bool = false
-
-var jump_stretch_time: float = 0.0
-var land_squash_time: float = 0.0
-var idle_time: float = 0.0
-
-func _ready() -> void:
-	animated_sprite_2d.play(\"idle\")
-	current_animation = \"idle\"
-	was_on_floor = is_on_floor()
-
-func _physics_process(delta: float) -> void:
-	idle_time += delta
-
-	var direction: float = Input.get_axis(\"a\", \"d\")
-	var on_floor_before_move: bool = is_on_floor()
-
-	if Input.is_action_just_pressed(\"ui_accept\") and on_floor_before_move:
-		velocity.y = JUMP_VELOCITY
-		jump_stretch_time = 0.12
-
-	if not on_floor_before_move:
-		if velocity.y > 0.0:
-			velocity.y += FALL_GRAVITY * delta
-		else:
-			velocity.y += GRAVITY * delta
-
-	if direction != 0.0:
-		var accel: float = ACCEL if on_floor_before_move else AIR_ACCEL
-		velocity.x = move_toward(velocity.x, direction * MAX_SPEED, accel * delta)
-		animated_sprite_2d.flip_h = direction < 0.0
-	else:
-		velocity.x = move_toward(velocity.x, 0.0, FRICTION * delta)
-
-	move_and_slide()
-
-	if was_on_floor == false and is_on_floor() == true:
-		land_squash_time = 0.12
-
-	update_animation(direction)
-	update_squash(direction, delta)
-
-	was_on_floor = is_on_floor()
-
-func update_animation(direction: float) -> void:
-	var target_animation: String = \"idle\"
-
-	if not is_on_floor():
-		target_animation = \"jump\"
-	elif abs(velocity.x) > 1.0:
-		target_animation = \"move\"
-
-	if current_animation != target_animation:
-		current_animation = target_animation
-		animated_sprite_2d.play(target_animation)
-
-func update_squash(direction: float, delta: float) -> void:
-	var target_scale := Vector2.ONE
-
-	if jump_stretch_time > 0.0:
-		jump_stretch_time -= delta
-		var t: float = clamp(jump_stretch_time / 0.12, 0.0, 1.0)
-		target_scale = Vector2(1.15 - 0.15 * t, 0.85 + 0.15 * t)
-
-	elif land_squash_time > 0.0:
-		land_squash_time -= delta
-		var t: float = clamp(land_squash_time / 0.12, 0.0, 1.0)
-		target_scale = Vector2(0.85 + 0.15 * t, 1.15 - 0.15 * t)
-
-	elif is_on_floor() and abs(velocity.x) < 1.0 and direction == 0.0:
-		var squash: float = sin(idle_time * 4.0) * 0.02
-		target_scale = Vector2(1.0 - squash, 1.0 + squash)
-
-	animated_sprite_2d.scale = animated_sprite_2d.scale.lerp(target_scale, 12.0 * delta)
-"
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fj7yv"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tlwt5"]
-atlas = ExtResource("1_f3sb7")
-region = Rect2(0, 0, 256, 512)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pkg7o"]
-atlas = ExtResource("2_tlwt5")
-region = Rect2(256, 0, 256, 512)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_aqk2v"]
-atlas = ExtResource("2_fj7yv")
-region = Rect2(768, 0, 256, 512)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_036b0"]
-atlas = ExtResource("2_fj7yv")
-region = Rect2(1024, 0, 256, 512)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_pkg7o"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tlwt5")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pkg7o")
-}],
-"loop": true,
-"name": &"jump",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aqk2v")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_036b0")
-}],
-"loop": true,
-"name": &"move",
-"speed": 5.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://coahgarjvtnno" path="res://map/Social/MockUp-01.png" id="1_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://c2f50chwb4hgp" path="res://char/player.tscn" id="2_fj7yv"]
 
 [node name="world" type="Node2D" unique_id=1537951377]
 
-[node name="player" type="CharacterBody2D" parent="." unique_id=1224880021]
+[node name="MockUp01" type="Sprite2D" parent="." unique_id=122494979]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+texture = ExtResource("1_aqk2v")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="MockUp01" unique_id=885361612]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MockUp01/StaticBody2D" unique_id=176383096]
+polygon = PackedVector2Array(-962.4398, 382.02246, -277.6886, 383.9486, -253.61156, 387.47992, -245.26485, 390.04816, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+
+[node name="player" parent="." unique_id=666402882 instance=ExtResource("2_fj7yv")]
 position = Vector2(540, 228)
-script = SubResource("GDScript_fj7yv")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="player" unique_id=667642268]
-position = Vector2(-2, 111)
-scale = Vector2(8.127552, 8.472743)
-shape = SubResource("CapsuleShape2D_fj7yv")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="player" unique_id=12037433]
-sprite_frames = SubResource("SpriteFrames_pkg7o")
-animation = &"move"
-frame_progress = 0.39662087
-
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1420151180]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=173799339]
-position = Vector2(528, 553)
-scale = Vector2(67.27099, -1.2338371)
-shape = SubResource("RectangleShape2D_fj7yv")
