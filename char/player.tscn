@@ -8,6 +8,21 @@
 [sub_resource type="GDScript" id="GDScript_fj7yv"]
 script/source = "extends CharacterBody2D
 
+# === TUNABLE SQUASH / STRETCH ===
+var MOVE_STRETCH_AMOUNT := 0.09
+var MOVE_STRETCH_SPEED := 17.0
+
+var JUMP_STRETCH_AMOUNT := 0.7
+var JUMP_DURATION := 0.12
+
+var LAND_SQUASH_AMOUNT := 0.20
+var LAND_DURATION := 0.12
+
+var IDLE_SQUASH_AMOUNT := 0.02
+var IDLE_SPEED := 4.0
+
+var SCALE_LERP_SPEED := 12.0
+
 const MAX_SPEED: float = 900.0
 const ACCEL: float = 1200.0
 const FRICTION: float = 1000.0
@@ -23,8 +38,8 @@ const FALL_GRAVITY: float = 2800.0
 var current_animation: String = \"idle\"
 var was_on_floor: bool = false
 
-var jump_stretch_time: float = 5.0
-var land_squash_time: float = 5.0
+var jump_stretch_time: float = 0.0
+var land_squash_time: float = 0.0
 var idle_time: float = 0.0
 var move_time: float = 0.0
 
@@ -33,29 +48,11 @@ func _ready() -> void:
 	current_animation = \"idle\"
 	was_on_floor = is_on_floor()
 
-	# PARTICLES SETUP
 	cpu_particles_2d.emitting = false
 	cpu_particles_2d.one_shot = false
-	
-	cpu_particles_2d.gravity = Vector2.ZERO
-	cpu_particles_2d.direction = Vector2(0, -1)
-	cpu_particles_2d.spread = 60.0
-	
-	cpu_particles_2d.initial_velocity_min = 20.0
-	cpu_particles_2d.initial_velocity_max = 60.0
-	
-	cpu_particles_2d.angular_velocity_min = -40.0
-	cpu_particles_2d.angular_velocity_max = 40.0
 
-	cpu_particles_2d.lifetime = 0.5
-
-	# ✅ FIXED (direct Gradient, no texture)
-	var gradient: Gradient = Gradient.new()
-	gradient.add_point(0.0, Color(1,1,1,0.0))   # invisible start
-	gradient.add_point(0.2, Color(1,1,1,1.0))   # quick appear
-	gradient.add_point(1.0, Color(1,1,1,0.0))   # fade out
-
-	cpu_particles_2d.color_ramp = gradient
+	cpu_particles_2d.direction = Vector2(0.0, -1.0)
+	cpu_particles_2d.gravity = Vector2(0.0, -20.0)
 
 func _physics_process(delta: float) -> void:
 	idle_time += delta
@@ -65,7 +62,7 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed(\"ui_accept\") and on_floor_before_move:
 		velocity.y = JUMP_VELOCITY
-		jump_stretch_time = 0.12
+		jump_stretch_time = JUMP_DURATION
 
 	if not on_floor_before_move:
 		if velocity.y > 0.0:
@@ -83,7 +80,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 	if was_on_floor == false and is_on_floor() == true:
-		land_squash_time = 0.12
+		land_squash_time = LAND_DURATION
 
 	update_animation(direction, delta)
 	update_squash(direction, delta)
@@ -112,25 +109,34 @@ func update_squash(direction: float, delta: float) -> void:
 	var target_scale: Vector2 = Vector2.ONE
 
 	if current_animation == \"move\" and is_on_floor():
-		var step: float = sin(move_time * 12.0)
-		var stretch: float = abs(step) * 0.05
+		var step: float = sin(move_time * MOVE_STRETCH_SPEED)
+		var stretch: float = abs(step) * MOVE_STRETCH_AMOUNT
 		target_scale = Vector2(1.0 + stretch, 1.0 - stretch * 0.8)
 	elif jump_stretch_time > 0.0:
 		jump_stretch_time -= delta
-		var t: float = clamp(jump_stretch_time / 0.12, 0.0, 1.0)
-		target_scale = Vector2(1.15 - 0.15 * t, 0.85 + 0.15 * t)
+		var t: float = clamp(jump_stretch_time / JUMP_DURATION, 0.0, 1.0)
+		target_scale = Vector2(
+			1.0 + JUMP_STRETCH_AMOUNT * (1.0 - t),
+			1.0 - JUMP_STRETCH_AMOUNT * (1.0 - t)
+		)
 	elif land_squash_time > 0.0:
 		land_squash_time -= delta
-		var t: float = clamp(land_squash_time / 0.12, 0.0, 1.0)
-		target_scale = Vector2(0.85 + 0.15 * t, 1.15 - 0.15 * t)
+		var t: float = clamp(land_squash_time / LAND_DURATION, 0.0, 1.0)
+		target_scale = Vector2(
+			1.0 - LAND_SQUASH_AMOUNT * (1.0 - t),
+			1.0 + LAND_SQUASH_AMOUNT * (1.0 - t)
+		)
 	elif is_on_floor() and abs(velocity.x) < 1.0 and direction == 0.0:
-		var squash: float = sin(idle_time * 4.0) * 0.02
+		var squash: float = sin(idle_time * IDLE_SPEED) * IDLE_SQUASH_AMOUNT
 		target_scale = Vector2(1.0 - squash, 1.0 + squash)
 
-	animated_sprite_2d.scale = animated_sprite_2d.scale.lerp(target_scale, 12.0 * delta)
+	animated_sprite_2d.scale = animated_sprite_2d.scale.lerp(target_scale, SCALE_LERP_SPEED * delta)
 
 func update_particles() -> void:
-	cpu_particles_2d.emitting = is_on_floor() and abs(velocity.x) > 1.0
+	if is_on_floor() and abs(velocity.x) > 1.0:
+		cpu_particles_2d.emitting = true
+	else:
+		cpu_particles_2d.emitting = false
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tlwt5"]
@@ -195,16 +201,14 @@ script = SubResource("GDScript_fj7yv")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=2091808727]
 position = Vector2(4, 218)
-amount = 4
+amount = 3
 texture = ExtResource("1_vx1ls")
-lifetime = 0.27
-preprocess = 5.42
+lifetime = 0.09999999999999999
 speed_scale = 0.5
 explosiveness = 0.15
 randomness = 1.0
 use_fixed_seed = true
-seed = 2222618903
-lifetime_randomness = 0.04
+seed = 10549
 emission_shape = 2
 emission_sphere_radius = 39.18
 radial_accel_min = 47.45
@@ -222,8 +226,7 @@ modulate = Color(0.96621424, 1.0845727, 1.0333394, 1)
 texture_filter = 2
 scale = Vector2(1.32, 1.32)
 sprite_frames = SubResource("SpriteFrames_pkg7o")
-animation = &"idle"
-frame_progress = 0.9657574
+animation = &"jump"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=325793439]
 position = Vector2(38, 129)
