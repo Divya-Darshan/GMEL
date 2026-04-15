@@ -1,0 +1,239 @@
+[gd_scene format=3 uid="uid://c2f50chwb4hgp"]
+
+[ext_resource type="Texture2D" uid="uid://cjgghs4sc0r6k" path="res://char/dust.png" id="1_vx1ls"]
+[ext_resource type="Texture2D" uid="uid://dfg4plcknq4sa" path="res://char/idle-2_256.png" id="2_ivbhp"]
+[ext_resource type="Texture2D" uid="uid://ceq8btvfim8hi" path="res://char/jump-2_256.png" id="3_tdjx7"]
+[ext_resource type="Texture2D" uid="uid://bmkdytquedmrj" path="res://char/walk-2_256.png" id="4_n32fl"]
+
+[sub_resource type="GDScript" id="GDScript_fj7yv"]
+script/source = "extends CharacterBody2D
+
+const MAX_SPEED: float = 900.0
+const ACCEL: float = 1200.0
+const FRICTION: float = 1000.0
+const AIR_ACCEL: float = 400.0
+
+const JUMP_VELOCITY: float = -850.0
+const GRAVITY: float = 1200.0
+const FALL_GRAVITY: float = 2800.0
+
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var cpu_particles_2d: CPUParticles2D = $CPUParticles2D
+
+var current_animation: String = \"idle\"
+var was_on_floor: bool = false
+
+var jump_stretch_time: float = 5.0
+var land_squash_time: float = 5.0
+var idle_time: float = 0.0
+var move_time: float = 0.0
+
+func _ready() -> void:
+	animated_sprite_2d.play(\"idle\")
+	current_animation = \"idle\"
+	was_on_floor = is_on_floor()
+
+	# PARTICLES SETUP
+	cpu_particles_2d.emitting = false
+	cpu_particles_2d.one_shot = false
+	
+	cpu_particles_2d.gravity = Vector2.ZERO
+	cpu_particles_2d.direction = Vector2(0, -1)
+	cpu_particles_2d.spread = 60.0
+	
+	cpu_particles_2d.initial_velocity_min = 20.0
+	cpu_particles_2d.initial_velocity_max = 60.0
+	
+	cpu_particles_2d.angular_velocity_min = -40.0
+	cpu_particles_2d.angular_velocity_max = 40.0
+
+	cpu_particles_2d.lifetime = 0.5
+
+	# ✅ FIXED (direct Gradient, no texture)
+	var gradient: Gradient = Gradient.new()
+	gradient.add_point(0.0, Color(1,1,1,0.0))   # invisible start
+	gradient.add_point(0.2, Color(1,1,1,1.0))   # quick appear
+	gradient.add_point(1.0, Color(1,1,1,0.0))   # fade out
+
+	cpu_particles_2d.color_ramp = gradient
+
+func _physics_process(delta: float) -> void:
+	idle_time += delta
+
+	var direction: float = Input.get_axis(\"a\", \"d\")
+	var on_floor_before_move: bool = is_on_floor()
+
+	if Input.is_action_just_pressed(\"ui_accept\") and on_floor_before_move:
+		velocity.y = JUMP_VELOCITY
+		jump_stretch_time = 0.12
+
+	if not on_floor_before_move:
+		if velocity.y > 0.0:
+			velocity.y += FALL_GRAVITY * delta
+		else:
+			velocity.y += GRAVITY * delta
+
+	if direction != 0.0:
+		var accel: float = ACCEL if on_floor_before_move else AIR_ACCEL
+		velocity.x = move_toward(velocity.x, direction * MAX_SPEED, accel * delta)
+		animated_sprite_2d.flip_h = direction < 0.0
+	else:
+		velocity.x = move_toward(velocity.x, 0.0, FRICTION * delta)
+
+	move_and_slide()
+
+	if was_on_floor == false and is_on_floor() == true:
+		land_squash_time = 0.12
+
+	update_animation(direction, delta)
+	update_squash(direction, delta)
+	update_particles()
+
+	was_on_floor = is_on_floor()
+
+func update_animation(direction: float, delta: float) -> void:
+	var target_animation: String = \"idle\"
+
+	if not is_on_floor():
+		target_animation = \"jump\"
+	elif abs(velocity.x) > 1.0:
+		target_animation = \"move\"
+
+	if current_animation != target_animation:
+		current_animation = target_animation
+		animated_sprite_2d.play(target_animation)
+
+	if current_animation == \"move\":
+		move_time += delta
+	else:
+		move_time = 0.0
+
+func update_squash(direction: float, delta: float) -> void:
+	var target_scale: Vector2 = Vector2.ONE
+
+	if current_animation == \"move\" and is_on_floor():
+		var step: float = sin(move_time * 12.0)
+		var stretch: float = abs(step) * 0.05
+		target_scale = Vector2(1.0 + stretch, 1.0 - stretch * 0.8)
+	elif jump_stretch_time > 0.0:
+		jump_stretch_time -= delta
+		var t: float = clamp(jump_stretch_time / 0.12, 0.0, 1.0)
+		target_scale = Vector2(1.15 - 0.15 * t, 0.85 + 0.15 * t)
+	elif land_squash_time > 0.0:
+		land_squash_time -= delta
+		var t: float = clamp(land_squash_time / 0.12, 0.0, 1.0)
+		target_scale = Vector2(0.85 + 0.15 * t, 1.15 - 0.15 * t)
+	elif is_on_floor() and abs(velocity.x) < 1.0 and direction == 0.0:
+		var squash: float = sin(idle_time * 4.0) * 0.02
+		target_scale = Vector2(1.0 - squash, 1.0 + squash)
+
+	animated_sprite_2d.scale = animated_sprite_2d.scale.lerp(target_scale, 12.0 * delta)
+
+func update_particles() -> void:
+	cpu_particles_2d.emitting = is_on_floor() and abs(velocity.x) > 1.0
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tlwt5"]
+atlas = ExtResource("2_ivbhp")
+region = Rect2(0, 0, 256, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pkg7o"]
+atlas = ExtResource("3_tdjx7")
+region = Rect2(256, 0, 256, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aqk2v"]
+atlas = ExtResource("4_n32fl")
+region = Rect2(768, 0, 256, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_036b0"]
+atlas = ExtResource("4_n32fl")
+region = Rect2(1024, 0, 256, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dwbse"]
+atlas = ExtResource("4_n32fl")
+region = Rect2(1280, 0, 256, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pkg7o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tlwt5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pkg7o")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aqk2v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_036b0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dwbse")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fj7yv"]
+radius = 2.0810814
+height = 13.263313
+
+[node name="player" type="CharacterBody2D" unique_id=666402882]
+script = SubResource("GDScript_fj7yv")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=2091808727]
+position = Vector2(4, 218)
+amount = 4
+texture = ExtResource("1_vx1ls")
+lifetime = 0.27
+preprocess = 5.42
+speed_scale = 0.5
+explosiveness = 0.15
+randomness = 1.0
+use_fixed_seed = true
+seed = 2222618903
+lifetime_randomness = 0.04
+emission_shape = 2
+emission_sphere_radius = 39.18
+radial_accel_min = 47.45
+radial_accel_max = 100.0
+tangential_accel_min = 23.97
+tangential_accel_max = 30.17
+damping_max = 0.53
+angle_min = -414.3
+angle_max = 720.0
+scale_amount_max = 2.25
+color = Color(0.90359825, 0.90359825, 0.9035982, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=409066079]
+modulate = Color(0.96621424, 1.0845727, 1.0333394, 1)
+texture_filter = 2
+scale = Vector2(1.32, 1.32)
+sprite_frames = SubResource("SpriteFrames_pkg7o")
+animation = &"idle"
+frame_progress = 0.9657574
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=325793439]
+position = Vector2(38, 129)
+zoom = Vector2(0.395, 0.395)
+limit_left = -1763
+limit_top = -2565
+limit_right = 4046
+limit_bottom = 1209
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=241621486]
+position = Vector2(-3.0000005, 137)
+scale = Vector2(14.415569, 13.722066)
+shape = SubResource("CapsuleShape2D_fj7yv")
