@@ -1,47 +1,23 @@
 [gd_scene format=3 uid="uid://bxb00sonenkqv"]
 
+[ext_resource type="Script" uid="uid://b81xiqkd0m8l8" path="res://cars/car.gd" id="1_fldve"]
 [ext_resource type="Texture2D" uid="uid://cogll4hsoi4cn" path="res://cars/Dodge Ram Rebel TRX/car-body.png" id="1_kwffn"]
 [ext_resource type="Texture2D" uid="uid://d3u1ehwiqo5xj" path="res://cars/Dodge Ram Rebel TRX/car-wheel.png" id="2_1d1nf"]
 
-[sub_resource type="GDScript" id="GDScript_1d1nf"]
-script/source = "extends RigidBody2D
-
-@onready var back_wheel: RigidBody2D = $back/RigidBody2D
-@onready var front_wheel: RigidBody2D = $front/RigidBody2D
-@onready var animated_sprite_2d: AnimatedSprite2D = $player/AnimatedSprite2D
-
-var speed = 60000
-var jump_force = -800
-
-func _physics_process(delta):
-	var dir = 0
-
-	if Input.is_action_pressed(\"d\"):
-		dir += 1
-	if Input.is_action_pressed(\"a\"):
-		dir -= 1
-
-	if dir != 0:
-		back_wheel.apply_torque_impulse(dir * speed * delta * 60)
-		front_wheel.apply_torque_impulse(dir * speed * delta * 60)
-		
-		animated_sprite_2d.play(\"move\")
-		animated_sprite_2d.flip_h = dir < 0
-	else:
-		animated_sprite_2d.play(\"idle\")
-
-	if Input.is_action_just_pressed(\"ui_accept\"):
-		back_wheel.apply_impulse(Vector2(0, jump_force))
-		front_wheel.apply_impulse(Vector2(0, jump_force))
-		apply_impulse(Vector2(0, jump_force * 0.6))
-		
-		animated_sprite_2d.play(\"jump\")
-"
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cslfh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fldve"]
 
 [node name="Dodge" type="RigidBody2D" unique_id=264630696 groups=["Dodge"]]
-script = SubResource("GDScript_1d1nf")
+script = ExtResource("1_fldve")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1070739962]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1427956078]
+position = Vector2(-9, 62)
+rotation = -1.557868
+scale = Vector2(-27.67339, 41.542694)
+shape = SubResource("CapsuleShape2D_cslfh")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1167790462]
 scale = Vector2(0.6528164, 0.6528164)
@@ -49,11 +25,11 @@ polygon = PackedVector2Array(-327, -30, -127, -28, -98, -93, 63, -98, 109, -84, 
 
 [node name="CarBody" type="Sprite2D" parent="." unique_id=541375231]
 position = Vector2(3, -14)
-scale = Vector2(0.6528164, 0.6528164)
+scale = Vector2(1.3996619, 1.3996619)
 texture = ExtResource("1_kwffn")
 
 [node name="back" type="PinJoint2D" parent="." unique_id=1522615666]
-position = Vector2(-143, 71)
+position = Vector2(-313, 147)
 node_a = NodePath("..")
 node_b = NodePath("RigidBody2D")
 
@@ -61,29 +37,32 @@ node_b = NodePath("RigidBody2D")
 position = Vector2(-1, 0)
 
 [node name="CarWheel" type="Sprite2D" parent="back/RigidBody2D" unique_id=1906955]
-position = Vector2(0.014343262, -0.36911392)
-scale = Vector2(0.76690567, 0.76690567)
+position = Vector2(-1.4207764, -0.23392868)
+scale = Vector2(1.6263205, 1.6263205)
 texture = ExtResource("2_1d1nf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="back/RigidBody2D" unique_id=763439151]
-position = Vector2(1.0143433, -1.3691139)
-scale = Vector2(4.2900586, 4.2900586)
+position = Vector2(-0.4207766, -1.2339287)
+scale = Vector2(9.097612, 9.097612)
 shape = SubResource("CircleShape2D_fldve")
 
 [node name="front" type="PinJoint2D" parent="." unique_id=219527839]
-position = Vector2(149, 74)
+position = Vector2(317, 150)
 node_a = NodePath("..")
 node_b = NodePath("RigidBody2D")
 
 [node name="RigidBody2D" type="RigidBody2D" parent="front" unique_id=1578371911]
-position = Vector2(-1, 0)
+position = Vector2(-6, -2)
 
 [node name="CarWheel" type="Sprite2D" parent="front/RigidBody2D" unique_id=1569398537]
-position = Vector2(-0.26309967, 0.33075118)
-scale = Vector2(0.81228155, 0.81228155)
+position = Vector2(-0.50006104, -1.3292313)
+scale = Vector2(1.6583323, 1.6583323)
 texture = ExtResource("2_1d1nf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="front/RigidBody2D" unique_id=904540218]
-position = Vector2(0.7369003, -0.6692505)
-scale = Vector2(4.5438905, 4.5438905)
+position = Vector2(0.4998169, -2.3292294)
+scale = Vector2(9.276686, 9.276686)
 shape = SubResource("CircleShape2D_fldve")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
