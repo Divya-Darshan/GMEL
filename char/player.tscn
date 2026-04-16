@@ -2,8 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://cjgghs4sc0r6k" path="res://char/dust.png" id="1_vx1ls"]
 [ext_resource type="Texture2D" uid="uid://dfg4plcknq4sa" path="res://char/idle-2_256.png" id="2_ivbhp"]
+[ext_resource type="Texture2D" uid="uid://drat1ss78j3v8" path="res://char/interact-2_256.png" id="3_n32fl"]
 [ext_resource type="Texture2D" uid="uid://ceq8btvfim8hi" path="res://char/jump-2_256.png" id="3_tdjx7"]
 [ext_resource type="Texture2D" uid="uid://bmkdytquedmrj" path="res://char/walk-2_256.png" id="4_n32fl"]
+[ext_resource type="Texture2D" uid="uid://c8lgsj3k5ylh8" path="res://char/surprise-2_256.png" id="6_gp2u4"]
 
 [sub_resource type="GDScript" id="GDScript_fj7yv"]
 script/source = "extends CharacterBody2D
@@ -35,6 +37,7 @@ const FALL_GRAVITY: float = 2800.0
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var cpu_particles_2d: CPUParticles2D = $CPUParticles2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
+@onready var surprise: Sprite2D = $Surprise
 
 var current_animation: String = \"idle\"
 var was_on_floor: bool = false
@@ -45,6 +48,7 @@ var idle_time: float = 0.0
 var move_time: float = 0.0
 
 func _ready() -> void:
+	surprise.trigger()
 	animated_sprite_2d.play(\"idle\")
 	current_animation = \"idle\"
 	was_on_floor = is_on_floor()
@@ -166,12 +170,25 @@ region = Rect2(1280, 0, 256, 512)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pkg7o"]
 animations = [{
+"frames": [],
+"loop": true,
+"name": &"ident",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tlwt5")
 }],
 "loop": true,
 "name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_n32fl")
+}],
+"loop": true,
+"name": &"inter",
 "speed": 5.0
 }, {
 "frames": [{
@@ -200,6 +217,72 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fj7yv"]
 radius = 2.0810814
 height = 13.263313
+
+[sub_resource type="GDScript" id="GDScript_tdjx7"]
+script/source = "extends Sprite2D
+
+# === TUNABLE VALUES ===
+var POP_SCALE := 1.4
+var NORMAL_SCALE := 1.0
+
+var POP_SPEED := 12.0
+var FADE_SPEED := 10.0
+
+var SQUASH_AMOUNT := 0.2
+var SQUASH_SPEED := 14.0
+
+var DURATION := 1.2   # how long it stays visible
+
+
+# === INTERNAL ===
+var time := 0.0
+var active := false
+var life_timer := 0.0
+
+
+func _ready() -> void:
+	scale = Vector2.ZERO
+	modulate.a = 0.0
+
+
+func trigger():
+	active = true
+	time = 0.0
+	life_timer = DURATION
+
+
+func _process(delta: float) -> void:
+	if not active:
+		return
+
+	time += delta
+	life_timer -= delta
+
+	# POP SCALE (ease out feel)
+	var target_scale := Vector2.ONE * NORMAL_SCALE
+	if time < 0.15:
+		target_scale = Vector2.ONE * POP_SCALE
+
+	# SQUASH & STRETCH
+	var squash := sin(time * SQUASH_SPEED) * SQUASH_AMOUNT
+	var squash_vec := Vector2(1.0 + squash, 1.0 - squash)
+
+	# APPLY SCALE
+	scale = scale.lerp(target_scale * squash_vec, POP_SPEED * delta)
+
+	# FADE IN
+	if time < 0.2:
+		modulate.a = lerp(modulate.a, 1.0, FADE_SPEED * delta)
+	# FADE OUT
+	elif life_timer < 0.3:
+		modulate.a = lerp(modulate.a, 0.0, FADE_SPEED * delta)
+
+	# END
+	if life_timer <= 0.0:
+		active = false
+		scale = Vector2.ZERO
+		modulate.a = 0.0
+"
 
 [node name="player" type="CharacterBody2D" unique_id=666402882]
 script = SubResource("GDScript_fj7yv")
@@ -231,7 +314,7 @@ modulate = Color(0.96621424, 1.0845727, 1.0333394, 1)
 texture_filter = 2
 scale = Vector2(1.32, 1.32)
 sprite_frames = SubResource("SpriteFrames_pkg7o")
-animation = &"jump"
+animation = &"idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=325793439]
 position = Vector2(38, 129)
@@ -245,3 +328,10 @@ limit_bottom = 1209
 position = Vector2(-3.0000005, 137)
 scale = Vector2(14.415569, 13.722066)
 shape = SubResource("CapsuleShape2D_fj7yv")
+
+[node name="Surprise" type="Sprite2D" parent="." unique_id=1535834416]
+position = Vector2(-2, -16)
+texture = ExtResource("6_gp2u4")
+region_enabled = true
+region_rect = Rect2(2048.9956, -0.13417053, 251.59302, 503.3509)
+script = SubResource("GDScript_tdjx7")

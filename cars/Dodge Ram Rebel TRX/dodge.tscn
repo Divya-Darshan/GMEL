@@ -111,14 +111,13 @@ polygon = PackedVector2Array(-327, -30, -127, -28, -98, -93, 63, -98, 109, -84, 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=929399840]
 position = Vector2(38, 129)
 zoom = Vector2(0.395, 0.395)
-limit_enabled = false
 limit_left = -1763
 limit_top = -2565
 limit_right = 4046
 limit_bottom = 1209
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1150261699]
-position = Vector2(807, -115)
+position = Vector2(772, -2)
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

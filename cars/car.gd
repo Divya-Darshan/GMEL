@@ -3,6 +3,8 @@ extends RigidBody2D
 @onready var back_wheel: RigidBody2D = $back/RigidBody2D
 @onready var front_wheel: RigidBody2D = $front/RigidBody2D
 
+
+
 @onready var enter: Button = $enter
 @onready var exit: Button = $exit
 
@@ -24,6 +26,7 @@ var car_active := false
 
 
 func _ready() -> void:
+
 	enter.visible = false
 	exit.visible = false
 
@@ -101,16 +104,19 @@ func exit_car():
 	car_active = false
 
 	if player != null:
-		player.global_position = global_position + Vector2(-60, 0)
+		# ✅ spawn at marker (SAFE spot, not under car)
+		player.global_position = marker_2d.global_position
+		
 		player.visible = true
 		player.set_physics_process(true)
 
 		if player_collision:
 			player_collision.disabled = false
 
+	# switch camera back
 	if player_camera:
 		player_camera.enabled = true
 	car_camera.enabled = false
 
-	enter.visible = true   # ✅ show enter again
-	exit.visible = false   # ✅ hide exit
+	enter.visible = true
+	exit.visible = false
