@@ -61,7 +61,28 @@ position = Vector2(0.4998169, -2.3292294)
 scale = Vector2(9.276686, 9.276686)
 shape = SubResource("CircleShape2D_fldve")
 
-[node name="Button" type="Button" parent="." unique_id=1690741685]
+[node name="enter" type="Button" parent="." unique_id=1690741685]
+offset_left = 369.0
+offset_top = -189.0
+offset_right = 1237.0
+offset_bottom = 191.0
+scale = Vector2(0.2754996, 0.2754996)
+theme_override_colors/font_disabled_color = Color(0.8750814, 0.8750814, 0.8750814, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
+theme_override_icons/icon = ExtResource("4_xw2pi")
+
+[node name="Label" type="Label" parent="enter" unique_id=1709315559]
+layout_mode = 0
+offset_left = 152.45035
+offset_top = 72.595406
+offset_right = 223.45035
+offset_bottom = 95.595406
+scale = Vector2(9.065071, 9.065071)
+theme_override_colors/font_shadow_color = Color(0.28285405, 0.31051266, 0.405279, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "ENTER"
+
+[node name="exit" type="Button" parent="." unique_id=694482956]
 visible = false
 offset_left = 369.0
 offset_top = -189.0
@@ -72,21 +93,34 @@ theme_override_colors/font_disabled_color = Color(0.8750814, 0.8750814, 0.875081
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0)
 theme_override_icons/icon = ExtResource("4_xw2pi")
 
-[node name="Label" type="Label" parent="Button" unique_id=1709315559]
+[node name="Label" type="Label" parent="exit" unique_id=54804208]
 layout_mode = 0
-offset_left = 87.11451
-offset_top = 76.225174
-offset_right = 158.1145
-offset_bottom = 99.225174
+offset_left = 225.04573
+offset_top = 72.595406
+offset_right = 296.04572
+offset_bottom = 95.595406
 scale = Vector2(9.065071, 9.065071)
 theme_override_colors/font_shadow_color = Color(0.28285405, 0.31051266, 0.405279, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-text = "IN/wOUT"
+text = "EXIT"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1167790462]
 scale = Vector2(1.3978081, 1.3978081)
 polygon = PackedVector2Array(-327, -30, -127, -28, -98, -93, 63, -98, 109, -84, 165, -51, 314, -37, 334, -22, 334, 25, 342, 37, 348, 37, 347, 68, 314, 83, 309, 83, -330, 71, -343, 47, -334, 38, -338, 16, -335, -13)
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=929399840]
+position = Vector2(38, 129)
+zoom = Vector2(0.395, 0.395)
+limit_enabled = false
+limit_left = -1763
+limit_top = -2565
+limit_right = 4046
+limit_bottom = 1209
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=1150261699]
+position = Vector2(807, -115)
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="enter" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="exit" to="." method="_on_button_pressed"]
