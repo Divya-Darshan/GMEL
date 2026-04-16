@@ -5,6 +5,7 @@ extends RigidBody2D
 
 
 
+
 @onready var enter: Button = $enter
 @onready var exit: Button = $exit
 

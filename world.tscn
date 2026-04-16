@@ -4,6 +4,25 @@
 [ext_resource type="PackedScene" uid="uid://c2f50chwb4hgp" path="res://char/player.tscn" id="2_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://bxb00sonenkqv" path="res://cars/Dodge Ram Rebel TRX/dodge.tscn" id="3_tlwt5"]
 
+[sub_resource type="GDScript" id="GDScript_tlwt5"]
+script/source = "extends Area2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.has_method(\"player\"):
+		body.sur()
+"
+
 [node name="world" type="Node2D" unique_id=1537951377]
 
 [node name="MockUp01" type="Sprite2D" parent="." unique_id=122494979]
@@ -16,8 +35,16 @@ texture = ExtResource("1_aqk2v")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MockUp01/StaticBody2D" unique_id=176383096]
 polygon = PackedVector2Array(-962.4398, 382.02246, -277.6886, 383.9486, -253.61156, 387.47992, -245.26485, 390.04816, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
 
+[node name="Area2D" type="Area2D" parent="MockUp01" unique_id=2116021239]
+script = SubResource("GDScript_tlwt5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MockUp01/Area2D" unique_id=7886855]
+polygon = PackedVector2Array(377.52805, 293.73996, 186.51682, 376.88605, 188.44302, 505.29694, 391.97427, 505.61795)
+
 [node name="player" parent="." unique_id=666402882 instance=ExtResource("2_fj7yv")]
 position = Vector2(997, 112)
 
 [node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_tlwt5")]
 position = Vector2(-379, 216)
+
+[connection signal="body_entered" from="MockUp01/Area2D" to="MockUp01/Area2D" method="_on_body_entered"]
