@@ -48,7 +48,6 @@ var idle_time: float = 0.0
 var move_time: float = 0.0
 
 func _ready() -> void:
-	surprise.trigger()
 	animated_sprite_2d.play(\"idle\")
 	current_animation = \"idle\"
 	was_on_floor = is_on_floor()
@@ -61,6 +60,10 @@ func _ready() -> void:
 	
 func  player():
 	pass
+	
+func sur():
+	surprise.trigger()
+	
 	
 
 func _physics_process(delta: float) -> void:
@@ -221,6 +224,7 @@ height = 13.263313
 [sub_resource type="GDScript" id="GDScript_tdjx7"]
 script/source = "extends Sprite2D
 
+
 # === TUNABLE VALUES ===
 var POP_SCALE := 1.4
 var NORMAL_SCALE := 1.0
@@ -282,6 +286,10 @@ func _process(delta: float) -> void:
 		active = false
 		scale = Vector2.ZERO
 		modulate.a = 0.0
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	trigger()
 "
 
 [node name="player" type="CharacterBody2D" unique_id=666402882]
@@ -329,7 +337,7 @@ position = Vector2(-3.0000005, 137)
 scale = Vector2(14.415569, 13.722066)
 shape = SubResource("CapsuleShape2D_fj7yv")
 
-[node name="Surprise" type="Sprite2D" parent="." unique_id=1535834416]
+[node name="Surprise" type="Sprite2D" parent="." unique_id=1378721918]
 position = Vector2(-2, -16)
 texture = ExtResource("6_gp2u4")
 region_enabled = true
