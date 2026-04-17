@@ -33,7 +33,7 @@ texture = ExtResource("1_aqk2v")
 [node name="StaticBody2D" type="StaticBody2D" parent="MockUp01" unique_id=885361612]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MockUp01/StaticBody2D" unique_id=176383096]
-polygon = PackedVector2Array(-962.4398, 382.02246, -277.6886, 383.9486, -253.61156, 387.47992, -245.26485, 390.04816, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+polygon = PackedVector2Array(-962.4398, 382.02246, -278.00964, 386.1958, -257.46387, 388.12198, -245.26485, 391.9743, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
 
 [node name="Area2D" type="Area2D" parent="MockUp01" unique_id=2116021239]
 script = SubResource("GDScript_tlwt5")
@@ -45,6 +45,6 @@ polygon = PackedVector2Array(377.52805, 293.73996, 186.51682, 376.88605, 188.443
 position = Vector2(997, 112)
 
 [node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_tlwt5")]
-position = Vector2(-379, 216)
+position = Vector2(-448, -319)
 
 [connection signal="body_entered" from="MockUp01/Area2D" to="MockUp01/Area2D" method="_on_body_entered"]

@@ -36,6 +36,9 @@ func _ready() -> void:
 
 	car_camera.enabled = false
 
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("a"):
+		_on_area_2d_body_entered(player) #
 
 func _physics_process(delta: float) -> void:
 	if not car_active:
