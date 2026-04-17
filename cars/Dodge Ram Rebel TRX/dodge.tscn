@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cogll4hsoi4cn" path="res://cars/Dodge Ram Rebel TRX/car-body.png" id="1_kwffn"]
 [ext_resource type="Texture2D" uid="uid://d3u1ehwiqo5xj" path="res://cars/Dodge Ram Rebel TRX/car-wheel.png" id="2_1d1nf"]
 [ext_resource type="Texture2D" uid="uid://ba6wgwxasncml" path="res://ui/b_1.png" id="4_xw2pi"]
+[ext_resource type="FontFile" uid="uid://bxx18m043yqw7" path="res://Kaph_Font_1_20/Web Open Font Format (.woff)/Kaph-Italic.woff" id="5_xw2pi"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cslfh"]
 
@@ -26,38 +27,39 @@ scale = Vector2(1.3996619, 1.3996619)
 texture = ExtResource("1_kwffn")
 
 [node name="back" type="PinJoint2D" parent="." unique_id=1522615666]
-position = Vector2(-313, 147)
+position = Vector2(-315, 141)
 node_a = NodePath("..")
 node_b = NodePath("RigidBody2D")
 
 [node name="RigidBody2D" type="RigidBody2D" parent="back" unique_id=544743361]
-position = Vector2(-1, 0)
+mass = 0.002
+gravity_scale = 0.805
 
 [node name="CarWheel" type="Sprite2D" parent="back/RigidBody2D" unique_id=1906955]
-position = Vector2(-1.4207764, -0.23392868)
+position = Vector2(0, 3.8146973e-06)
 scale = Vector2(1.6263205, 1.6263205)
 texture = ExtResource("2_1d1nf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="back/RigidBody2D" unique_id=763439151]
-position = Vector2(-0.4207766, -1.2339287)
+position = Vector2(-1.7881393e-07, 3.9339066e-06)
 scale = Vector2(9.097612, 9.097612)
 shape = SubResource("CircleShape2D_fldve")
 
 [node name="front" type="PinJoint2D" parent="." unique_id=219527839]
-position = Vector2(317, 150)
+position = Vector2(315, 140)
 node_a = NodePath("..")
 node_b = NodePath("RigidBody2D")
 
 [node name="RigidBody2D" type="RigidBody2D" parent="front" unique_id=1578371911]
-position = Vector2(-6, -2)
+mass = 0.05
 
 [node name="CarWheel" type="Sprite2D" parent="front/RigidBody2D" unique_id=1569398537]
-position = Vector2(-0.50006104, -1.3292313)
+position = Vector2(0, -7.6293945e-06)
 scale = Vector2(1.6583323, 1.6583323)
 texture = ExtResource("2_1d1nf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="front/RigidBody2D" unique_id=904540218]
-position = Vector2(0.4998169, -2.3292294)
+position = Vector2(3.8146973e-06, 9.536743e-06)
 scale = Vector2(9.276686, 9.276686)
 shape = SubResource("CircleShape2D_fldve")
 
@@ -73,13 +75,14 @@ theme_override_icons/icon = ExtResource("4_xw2pi")
 
 [node name="Label" type="Label" parent="enter" unique_id=1709315559]
 layout_mode = 0
-offset_left = 152.45035
-offset_top = 72.595406
-offset_right = 223.45035
-offset_bottom = 95.595406
+offset_left = 112.52289
+offset_top = 94.37402
+offset_right = 183.52289
+offset_bottom = 117.37402
 scale = Vector2(9.065071, 9.065071)
 theme_override_colors/font_shadow_color = Color(0.28285405, 0.31051266, 0.405279, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_xw2pi")
 text = "ENTER"
 
 [node name="exit" type="Button" parent="." unique_id=694482956]
@@ -95,18 +98,19 @@ theme_override_icons/icon = ExtResource("4_xw2pi")
 
 [node name="Label" type="Label" parent="exit" unique_id=54804208]
 layout_mode = 0
-offset_left = 225.04573
-offset_top = 72.595406
-offset_right = 296.04572
-offset_bottom = 95.595406
+offset_left = 196.00746
+offset_top = 90.74425
+offset_right = 267.00745
+offset_bottom = 113.74425
 scale = Vector2(9.065071, 9.065071)
 theme_override_colors/font_shadow_color = Color(0.28285405, 0.31051266, 0.405279, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_xw2pi")
 text = "EXIT"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=1167790462]
 scale = Vector2(1.3978081, 1.3978081)
-polygon = PackedVector2Array(-327, -30, -127, -28, -98.0106, -93.71816, 62.95571, -95.86438, 105.88006, -79.41005, 168.12036, -45.070568, 312.63235, -32.19326, 331.2329, -19.315958, 334, 25, 334.0945, 37.916508, 328.37128, 67.248146, 321.21722, 76.54842, 314.77856, 80.84086, 309, 83, -331.2329, 72.9714, -333.37912, 47.93219, -334, 38, -338, 16, -335, -13)
+polygon = PackedVector2Array(-327, -30, -127, -28, -98.0106, -93.71816, 62.95571, -95.86438, 105.88006, -79.41005, 168.12036, -45.070568, 307.6245, -25.75461, 320.5018, -15.738928, 334, 25, 334.0945, 37.916508, 328.37128, 67.248146, 321.21722, 76.54842, 314.77856, 80.84086, 309, 83, -331.2329, 72.9714, -333.37912, 47.93219, -334, 38, -338, 16, -335, -13)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=929399840]
 position = Vector2(38, 129)
