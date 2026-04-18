@@ -9,11 +9,11 @@ script/source = "extends Area2D
 
 # === SETTINGS ===
 var grid_x := 6
-var grid_y := 4
+var grid_y := 2
 
 var explosion_strength := 1000.0
 var fall_gravity := 400.0
-var fade_speed := 0.4
+var fade_speed := 1.0
 
 var pieces := []
 var broken := false
