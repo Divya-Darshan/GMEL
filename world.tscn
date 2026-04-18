@@ -28,32 +28,40 @@ func _on_body_entered(body: Node2D) -> void:
 
 [node name="world" type="Node2D" unique_id=1537951377]
 
-[node name="MockUp01" type="Sprite2D" parent="." unique_id=122494979]
+[node name="Collusion" type="StaticBody2D" parent="." unique_id=885361612]
 position = Vector2(1123, -666)
 scale = Vector2(3.115, 3.115)
-texture = ExtResource("1_aqk2v")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="MockUp01" unique_id=885361612]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MockUp01/StaticBody2D" unique_id=176383096]
-polygon = PackedVector2Array(-962.4398, 382.02246, -278.00964, 386.1958, -257.46387, 388.12198, -245.26485, 391.9743, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
-
-[node name="border_lerft" type="CollisionShape2D" parent="MockUp01/StaticBody2D" unique_id=271913936]
-position = Vector2(-946.0674, -34.028885)
+[node name="border_lerft" type="CollisionShape2D" parent="Collusion" unique_id=271913936]
+position = Vector2(-963.72394, -32.423748)
 rotation = 1.5714304
 scale = Vector2(7.3193035, 7.3193035)
 shape = SubResource("WorldBoundaryShape2D_tlwt5")
 
-[node name="border_top" type="CollisionShape2D" parent="MockUp01/StaticBody2D" unique_id=1468968908]
+[node name="border_top" type="CollisionShape2D" parent="Collusion" unique_id=1468968908]
 position = Vector2(-20.8667, -627.28735)
-rotation = 3.150923
+rotation = -3.1322622
 scale = Vector2(7.3193035, 7.3193035)
 shape = SubResource("WorldBoundaryShape2D_tlwt5")
 
-[node name="border_bottom" type="CollisionShape2D" parent="MockUp01/StaticBody2D" unique_id=1925049769]
-position = Vector2(-52.32745, 632.42377)
+[node name="border_bottom" type="CollisionShape2D" parent="Collusion" unique_id=1925049769]
+position = Vector2(-52.327454, 632.4237)
 scale = Vector2(7.3193035, 7.3193035)
 shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_right" type="CollisionShape2D" parent="Collusion" unique_id=1777442266]
+position = Vector2(962.1189, 19.903698)
+rotation = -1.5707964
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collusion" unique_id=176383096]
+polygon = PackedVector2Array(-962.4398, 382.02246, -278.97272, 387.47992, -262.6003, 389.4061, -246.54895, 392.61636, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+
+[node name="MockUp01" type="Sprite2D" parent="." unique_id=122494979]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+texture = ExtResource("1_aqk2v")
 
 [node name="Area2D" type="Area2D" parent="MockUp01" unique_id=2116021239]
 script = SubResource("GDScript_tlwt5")
@@ -62,14 +70,23 @@ script = SubResource("GDScript_tlwt5")
 polygon = PackedVector2Array(377.52805, 293.73996, 186.51682, 376.88605, 188.44302, 505.29694, 391.97427, 505.61795)
 
 [node name="player" parent="." unique_id=666402882 instance=ExtResource("2_fj7yv")]
-position = Vector2(997, 112)
+position = Vector2(2715, 5)
 
 [node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_tlwt5")]
-position = Vector2(-448, -319)
+position = Vector2(1681, 362)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1999360780]
 
 [node name="box" parent="." unique_id=915785525 instance=ExtResource("4_aqk2v")]
-position = Vector2(1611, 567)
+position = Vector2(3037, -2209.9998)
+scale = Vector2(0.625, 0.625)
+
+[node name="box2" parent="." unique_id=1268873935 instance=ExtResource("4_aqk2v")]
+position = Vector2(3325, -2213.9998)
+scale = Vector2(0.625, 0.625)
+
+[node name="box3" parent="." unique_id=915077054 instance=ExtResource("4_aqk2v")]
+position = Vector2(3171.0002, -2464.9998)
+scale = Vector2(0.625, 0.625)
 
 [connection signal="body_entered" from="MockUp01/Area2D" to="MockUp01/Area2D" method="_on_body_entered"]
