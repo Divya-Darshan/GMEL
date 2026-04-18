@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://coahgarjvtnno" path="res://map/Social/MockUp-01.png" id="1_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://c2f50chwb4hgp" path="res://char/player.tscn" id="2_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://bxb00sonenkqv" path="res://cars/Dodge Ram Rebel TRX/dodge.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://cgoxenu3igl6p" path="res://ui/box/box.tscn" id="4_aqk2v"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_tlwt5"]
 
@@ -65,5 +66,10 @@ position = Vector2(997, 112)
 
 [node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_tlwt5")]
 position = Vector2(-448, -319)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1999360780]
+
+[node name="box" parent="." unique_id=915785525 instance=ExtResource("4_aqk2v")]
+position = Vector2(1611, 567)
 
 [connection signal="body_entered" from="MockUp01/Area2D" to="MockUp01/Area2D" method="_on_body_entered"]

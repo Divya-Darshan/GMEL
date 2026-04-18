@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://cgoxenu3igl6p"]
+
+[ext_resource type="Texture2D" uid="uid://cy7utpht5os4o" path="res://ui/box/1.png" id="1_fys3n"]
+[ext_resource type="Texture2D" uid="uid://cjiqutr3ka6i3" path="res://ui/box/2.png" id="2_geaey"]
+[ext_resource type="Texture2D" uid="uid://k0w07580ln27" path="res://ui/box/3.png" id="3_dgqxc"]
+[ext_resource type="Texture2D" uid="uid://dvmefsm11d23m" path="res://ui/box/4.png" id="4_howtq"]
+[ext_resource type="Texture2D" uid="uid://d3o8jy3tji33j" path="res://ui/box/5.png" id="5_kwtw8"]
+
+[sub_resource type="GDScript" id="GDScript_fys3n"]
+script/source = "extends Area2D
+
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+
+# === TUNABLE ===
+var idle_switch_time_min: float = 1.0
+var idle_switch_time_max: float = 2.5
+
+var squash_amount: float = 0.15      # reduced (more subtle)
+var squash_speed: float = 4.0       # slower = smoother
+
+var scale_lerp_speed: float = 8.0    # smoother blending
+
+# === STATE ===
+var idle_timer: float = 0.0
+var time: float = 0.0
+var is_hit: bool = false
+
+
+func _ready() -> void:
+	randomize()
+	reset_idle_timer()
+	animated_sprite_2d.play(\"idle\")
+
+
+func _process(delta: float) -> void:
+	time += delta
+	idle_timer -= delta
+
+	# ❌ NO squash during hit
+	if is_hit:
+		return
+
+	var wave: float = sin(time * squash_speed)
+	var stretch: float = wave * squash_amount
+
+	var target_scale: Vector2 = Vector2(
+		1.0 + stretch,
+		1.0 - stretch
+	)
+
+	animated_sprite_2d.scale = animated_sprite_2d.scale.lerp(
+		target_scale,
+		scale_lerp_speed * delta
+	)
+
+	# 🎲 RANDOM IDLE SWITCH
+	if idle_timer <= 0.0:
+		play_random_idle()
+		reset_idle_timer()
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if is_hit:
+		return
+
+	is_hit = true
+
+	# 🎯 play hit animation (no squash)
+	animated_sprite_2d.scale = Vector2.ONE
+	animated_sprite_2d.play(\"hit\")
+
+
+# === HELPERS ===
+
+func play_random_idle() -> void:
+	var idles: Array[String] = [\"idle\", \"idle2\", \"idle3\"]
+	var chosen: String = idles.pick_random()
+	animated_sprite_2d.play(chosen)
+
+
+func reset_idle_timer() -> void:
+	idle_timer = randf_range(idle_switch_time_min, idle_switch_time_max)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vt8vk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jt454"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fys3n")
+}],
+"loop": false,
+"name": &"default",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_fys3n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_geaey")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_dgqxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_howtq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_kwtw8")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 5.0
+}]
+
+[node name="box" type="Area2D" unique_id=915785525]
+script = SubResource("GDScript_fys3n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=568993190]
+scale = Vector2(26.781631, 26.781631)
+shape = SubResource("RectangleShape2D_vt8vk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=770157507]
+sprite_frames = SubResource("SpriteFrames_jt454")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
