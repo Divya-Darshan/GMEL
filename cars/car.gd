@@ -3,16 +3,13 @@ extends RigidBody2D
 @onready var back_wheel: RigidBody2D = $back/RigidBody2D
 @onready var front_wheel: RigidBody2D = $front/RigidBody2D
 
-
-
-
 @onready var enter: Button = $enter
 @onready var exit: Button = $exit
 
 @onready var car_camera: Camera2D = $Camera2D
 @onready var marker_2d: Marker2D = $Marker2D
 
-var speed := 12000.0
+var speed := 1200.0
 var jump_force := -800.0
 
 var float_force := -40.0
@@ -27,7 +24,6 @@ var car_active := false
 
 
 func _ready() -> void:
-
 	enter.visible = false
 	exit.visible = false
 
@@ -36,9 +32,15 @@ func _ready() -> void:
 
 	car_camera.enabled = false
 
-func _process(delta: float) -> void:
-	if Input.is_action_pressed("a"):
-		_on_area_2d_body_entered(player) #
+
+# ✅ KEY INPUT (E to enter/exit)
+func _input(event):
+	if event.is_action_pressed("enter"):
+		if car_active:
+			exit_car()
+		else:
+			enter_car()
+
 
 func _physics_process(delta: float) -> void:
 	if not car_active:
@@ -50,7 +52,8 @@ func _physics_process(delta: float) -> void:
 		back_wheel.apply_torque_impulse(dir * speed * delta * 60.0)
 		front_wheel.apply_torque_impulse(dir * speed * delta * 60.0)
 
-	if Input.is_action_just_pressed("ui_accept"):
+	# ✅ SPACE = JUMP
+	if Input.is_action_just_pressed("jump"):
 		back_wheel.apply_impulse(Vector2(0, jump_force))
 		front_wheel.apply_impulse(Vector2(0, jump_force))
 		apply_impulse(Vector2(0, jump_force * 0.6))
@@ -100,7 +103,7 @@ func enter_car():
 	car_camera.enabled = true
 
 	enter.visible = false
-	exit.visible = true   # ✅ show exit button
+	exit.visible = true
 
 
 # EXIT CAR
@@ -108,16 +111,13 @@ func exit_car():
 	car_active = false
 
 	if player != null:
-		# ✅ spawn at marker (SAFE spot, not under car)
 		player.global_position = marker_2d.global_position
-		
 		player.visible = true
 		player.set_physics_process(true)
 
 		if player_collision:
 			player_collision.disabled = false
 
-	# switch camera back
 	if player_camera:
 		player_camera.enabled = true
 	car_camera.enabled = false
