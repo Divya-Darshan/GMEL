@@ -78,15 +78,15 @@ position = Vector2(1681, 362)
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1999360780]
 
 [node name="box" parent="." unique_id=915785525 instance=ExtResource("4_aqk2v")]
-position = Vector2(3037, -2209.9998)
+position = Vector2(2742, 722)
 scale = Vector2(0.625, 0.625)
 
 [node name="box2" parent="." unique_id=1268873935 instance=ExtResource("4_aqk2v")]
-position = Vector2(3325, -2213.9998)
+position = Vector2(3030, 718)
 scale = Vector2(0.625, 0.625)
 
 [node name="box3" parent="." unique_id=915077054 instance=ExtResource("4_aqk2v")]
-position = Vector2(3171.0002, -2464.9998)
+position = Vector2(2876.0002, 466.99997)
 scale = Vector2(0.625, 0.625)
 
 [connection signal="body_entered" from="MockUp01/Area2D" to="MockUp01/Area2D" method="_on_body_entered"]
