@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://cgoxenu3igl6p"]
+
+[ext_resource type="Texture2D" uid="uid://cy7utpht5os4o" path="res://ui/box/1.png" id="1_fys3n"]
+
+[sub_resource type="GDScript" id="GDScript_fys3n"]
+script/source = "extends Area2D
+
+@onready var sprite: Sprite2D = $\"1\"
+
+# === SETTINGS ===
+var grid_x := 6
+var grid_y := 4
+
+var explosion_strength := 1000.0
+var fall_gravity := 400.0
+var fade_speed := 0.4
+
+var pieces := []
+var broken := false
+
+
+func _ready() -> void:
+	randomize()
+
+
+func _process(delta: float) -> void:
+	if broken:
+		update_pieces(delta)
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.has_method(\"car\"):
+		if broken:
+			return
+		
+		break_sprite()
+
+
+# === BREAK ===
+func break_sprite():
+	broken = true
+	sprite.visible = false
+
+	var tex = sprite.texture
+	var size = tex.get_size()
+
+	var piece_w = size.x / grid_x
+	var piece_h = size.y / grid_y
+
+	for x in range(grid_x):
+		for y in range(grid_y):
+			var p = Sprite2D.new()
+			p.texture = tex
+			p.region_enabled = true
+
+			p.region_rect = Rect2(
+				x * piece_w,
+				y * piece_h,
+				piece_w,
+				piece_h
+			)
+
+			var offset = Vector2(
+				x * piece_w - size.x / 2 + piece_w / 2,
+				y * piece_h - size.y / 2 + piece_h / 2
+			)
+
+			p.position = sprite.position + offset
+			add_child(p)
+
+			# 🔥 RANDOM SPREAD SETUP
+			var dir = Vector2(
+				randf_range(-1.0, 1.0),
+				randf_range(-1.2, -0.3)
+			).normalized()
+
+			var speed = randf_range(120.0, explosion_strength)
+			var spin = randf_range(-8.0, 8.0)
+			var drift = randf_range(-30.0, 30.0)
+
+			pieces.append({
+				\"node\": p,
+				\"vel\": dir * speed,
+				\"spin\": spin,
+				\"drift\": drift
+			})
+
+
+# === UPDATE ===
+func update_pieces(delta):
+	for i in range(pieces.size() - 1, -1, -1):
+		var piece = pieces[i]
+		var p = piece[\"node\"]
+
+		if not is_instance_valid(p):
+			pieces.remove_at(i)
+			continue
+
+		var vel = piece[\"vel\"]
+
+		# 🔥 sideways spread
+		vel.x += piece[\"drift\"] * delta
+
+		# movement
+		p.position += vel * delta
+
+		# gravity
+		vel.y += fall_gravity * delta
+		piece[\"vel\"] = vel
+
+		# rotation
+		p.rotation += piece[\"spin\"] * delta
+
+		# fade out
+		p.modulate.a -= fade_speed * delta
+
+		if p.modulate.a <= 0:
+			p.queue_free()
+			pieces.remove_at(i)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vt8vk"]
+
+[node name="box" type="Area2D" unique_id=915785525]
+script = SubResource("GDScript_fys3n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=568993190]
+scale = Vector2(26.781631, 26.781631)
+shape = SubResource("RectangleShape2D_vt8vk")
+
+[node name="1" type="Sprite2D" parent="." unique_id=319818173]
+position = Vector2(2.0000002, 39.000008)
+scale = Vector2(0.755, 0.755)
+texture = ExtResource("1_fys3n")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

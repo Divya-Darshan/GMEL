@@ -22,6 +22,8 @@ var player_collision: CollisionShape2D = null
 
 var car_active := false
 
+func car():
+	pass
 
 func _ready() -> void:
 	enter.visible = false
