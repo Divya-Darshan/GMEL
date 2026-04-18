@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://c2f50chwb4hgp" path="res://char/player.tscn" id="2_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://bxb00sonenkqv" path="res://cars/Dodge Ram Rebel TRX/dodge.tscn" id="3_tlwt5"]
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_tlwt5"]
+
 [sub_resource type="GDScript" id="GDScript_tlwt5"]
 script/source = "extends Area2D
 
@@ -34,6 +36,23 @@ texture = ExtResource("1_aqk2v")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MockUp01/StaticBody2D" unique_id=176383096]
 polygon = PackedVector2Array(-962.4398, 382.02246, -278.00964, 386.1958, -257.46387, 388.12198, -245.26485, 391.9743, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+
+[node name="border_lerft" type="CollisionShape2D" parent="MockUp01/StaticBody2D" unique_id=271913936]
+position = Vector2(-946.0674, -34.028885)
+rotation = 1.5714304
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_top" type="CollisionShape2D" parent="MockUp01/StaticBody2D" unique_id=1468968908]
+position = Vector2(-20.8667, -627.28735)
+rotation = 3.150923
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_bottom" type="CollisionShape2D" parent="MockUp01/StaticBody2D" unique_id=1925049769]
+position = Vector2(-52.32745, 632.42377)
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
 
 [node name="Area2D" type="Area2D" parent="MockUp01" unique_id=2116021239]
 script = SubResource("GDScript_tlwt5")
