@@ -8,7 +8,7 @@ A 2D physics-based platformer where the player acts as a mechanic, collects part
 
 ## Core Goal
 
-"Build a working car and reach the test garage to prove your skills and unlock the exit."
+"Build a working car and grab diff variable levelup hit the box's "
 
 ---
 

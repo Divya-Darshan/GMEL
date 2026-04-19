@@ -22,8 +22,18 @@ var player_collision: CollisionShape2D = null
 
 var car_active := false
 
+# === CAMERA SHAKE ===
+var shake_strength := 20.0
+var shake_duration := 0.25
+var shake_decay := 20.0
+
+var shake_time := 0.0
+var current_shake_power := 0.0
+
+
 func car():
 	pass
+
 
 func _ready() -> void:
 	enter.visible = false
@@ -34,14 +44,23 @@ func _ready() -> void:
 
 	car_camera.enabled = false
 
+	# 🔥 connect all breakable boxes
+	for box in get_tree().get_nodes_in_group("breakable"):
+		if box.has_signal("hit_object"):
+			box.hit_object.connect(_on_object_hit)
 
-# ✅ KEY INPUT (E to enter/exit)
+
+# ✅ KEY INPUT (ENTER to enter/exit)
 func _input(event):
 	if event.is_action_pressed("enter"):
 		if car_active:
 			exit_car()
 		else:
 			enter_car()
+
+
+func _process(delta):
+	update_camera_shake(delta)
 
 
 func _physics_process(delta: float) -> void:
@@ -54,13 +73,13 @@ func _physics_process(delta: float) -> void:
 		back_wheel.apply_torque_impulse(dir * speed * delta * 60.0)
 		front_wheel.apply_torque_impulse(dir * speed * delta * 60.0)
 
-	# ✅ SPACE = JUMP
+	# JUMP
 	if Input.is_action_just_pressed("jump"):
 		back_wheel.apply_impulse(Vector2(0, jump_force))
 		front_wheel.apply_impulse(Vector2(0, jump_force))
 		apply_impulse(Vector2(0, jump_force * 0.6))
 
-	# float
+	# FLOAT
 	if Input.is_action_pressed("ui_accept"):
 		float_timer -= delta
 		if float_timer <= 0.0:
@@ -126,3 +145,33 @@ func exit_car():
 
 	enter.visible = true
 	exit.visible = false
+
+
+# === RECEIVE HIT FROM BOX ===
+func _on_object_hit(strength):
+	start_shake(strength)
+
+
+# === START SHAKE ===
+func start_shake(strength):
+	current_shake_power = shake_strength * clamp(strength, 0.5, 3.0)
+	shake_time = shake_duration
+
+
+# === SHAKE UPDATE ===
+func update_camera_shake(delta):
+	if not car_camera.enabled:
+		return
+
+	if shake_time > 0.0:
+		shake_time -= delta
+
+		var t = shake_time / shake_duration
+		var power = current_shake_power * pow(t, 2)
+
+		car_camera.offset = Vector2(
+			randf_range(-1, 1),
+			randf_range(-1, 1)
+		) * power
+	else:
+		car_camera.offset = car_camera.offset.lerp(Vector2.ZERO, shake_decay * delta)
