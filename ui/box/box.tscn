@@ -6,7 +6,7 @@
 script/source = "extends Node2D
 
 @onready var sprite: Sprite2D = $\"1\"
-@onready var static_body_2d: StaticBody2D = $StaticBody2D
+@onready var static_body_2d = $StaticBody2D
 signal hit_object(strength)
 
 # === SETTINGS ===
@@ -23,6 +23,7 @@ var broken := false
 
 func _ready() -> void:
 	randomize()
+
 
 
 func _process(delta: float) -> void:
@@ -134,6 +135,8 @@ func update_pieces(delta):
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j7qbe"]
 
 [node name="box" type="Node2D" unique_id=859864415]
+light_mask = 3
+visibility_layer = 3
 script = SubResource("GDScript_fys3n")
 
 [node name="1" type="Sprite2D" parent="." unique_id=319818173]
@@ -147,11 +150,11 @@ texture = ExtResource("1_fys3n")
 scale = Vector2(26.781631, 26.781631)
 shape = SubResource("RectangleShape2D_vt8vk")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1631852469]
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=625599494]
 
-[node name="CollisionPolygon2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2106852617]
-position = Vector2(-4.000002, 34)
-scale = Vector2(19.939526, 19.474123)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=526642366]
+position = Vector2(-3, 34)
+scale = Vector2(19.82084, -19.336184)
 shape = SubResource("RectangleShape2D_j7qbe")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]
