@@ -3,9 +3,11 @@
 [ext_resource type="Texture2D" uid="uid://cy7utpht5os4o" path="res://ui/box/1.png" id="1_fys3n"]
 
 [sub_resource type="GDScript" id="GDScript_fys3n"]
-script/source = "extends Area2D
+script/source = "extends Node2D
 
 @onready var sprite: Sprite2D = $\"1\"
+@onready var static_body_2d: StaticBody2D = $StaticBody2D
+signal hit_object(strength)
 
 # === SETTINGS ===
 var grid_x := 6
@@ -33,7 +35,15 @@ func _on_body_entered(body: Node2D) -> void:
 		if broken:
 			return
 		
+		# 🔥 get impact strength from car velocity
+		var strength := 1.0
+		if body is RigidBody2D:
+			strength = body.linear_velocity.length() / 300.0
+		
 		break_sprite()
+		static_body_2d.queue_free()
+
+		emit_signal(\"hit_object\", strength)  # 🔥 send to car
 
 
 # === BREAK ===
@@ -121,16 +131,27 @@ func update_pieces(delta):
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vt8vk"]
 
-[node name="box" type="Area2D" unique_id=915785525]
-script = SubResource("GDScript_fys3n")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j7qbe"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=568993190]
-scale = Vector2(26.781631, 26.781631)
-shape = SubResource("RectangleShape2D_vt8vk")
+[node name="box" type="Node2D" unique_id=859864415]
+script = SubResource("GDScript_fys3n")
 
 [node name="1" type="Sprite2D" parent="." unique_id=319818173]
 position = Vector2(2.0000002, 39.000008)
 scale = Vector2(0.755, 0.755)
 texture = ExtResource("1_fys3n")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="Area2D" type="Area2D" parent="." unique_id=1987069841]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=568993190]
+scale = Vector2(26.781631, 26.781631)
+shape = SubResource("RectangleShape2D_vt8vk")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1631852469]
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2106852617]
+position = Vector2(-4.000002, 34)
+scale = Vector2(19.939526, 19.474123)
+shape = SubResource("RectangleShape2D_j7qbe")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]
