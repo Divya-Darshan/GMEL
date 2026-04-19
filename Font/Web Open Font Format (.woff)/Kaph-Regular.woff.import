@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://d0v0owdo5scbs"
-path="res://.godot/imported/Kaph-Italic.ttf-99ab7dd7d19a75bd584489de28d1b114.fontdata"
+uid="uid://b8msgbgngeuty"
+path="res://.godot/imported/Kaph-Regular.woff-7c67f2eb54127a5dec2a224802d46920.fontdata"
 
 [deps]
 
-source_file="res://Kaph_Font_1_20/TrueType (.ttf)/Kaph-Italic.ttf"
-dest_files=["res://.godot/imported/Kaph-Italic.ttf-99ab7dd7d19a75bd584489de28d1b114.fontdata"]
+source_file="res://Font/Web Open Font Format (.woff)/Kaph-Regular.woff"
+dest_files=["res://.godot/imported/Kaph-Regular.woff-7c67f2eb54127a5dec2a224802d46920.fontdata"]
 
 [params]
 
