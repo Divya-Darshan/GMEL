@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://dwfr3qdqt5vka"]
+
+[ext_resource type="Texture2D" uid="uid://coahgarjvtnno" path="res://map/Social/MockUp-01.png" id="1_jirdo"]
+[ext_resource type="PackedScene" uid="uid://cgoxenu3igl6p" path="res://ui/box/box.tscn" id="2_bt44k"]
+[ext_resource type="PackedScene" uid="uid://bxb00sonenkqv" path="res://cars/Dodge Ram Rebel TRX/dodge.tscn" id="3_bt44k"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_tlwt5"]
+
+[sub_resource type="GDScript" id="GDScript_tlwt5"]
+script/source = "extends Area2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.has_method(\"player\"):
+		body.sur()
+"
+
+[node name="level1" type="Node2D" unique_id=579676946]
+
+[node name="Collusion" type="StaticBody2D" parent="." unique_id=2146099416]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+
+[node name="border_lerft" type="CollisionShape2D" parent="Collusion" unique_id=1662628667]
+position = Vector2(-963.72394, -32.423748)
+rotation = 1.5714304
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_top" type="CollisionShape2D" parent="Collusion" unique_id=384146042]
+position = Vector2(-20.8667, -627.28735)
+rotation = -3.1322622
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_bottom" type="CollisionShape2D" parent="Collusion" unique_id=4030967]
+position = Vector2(-52.327454, 632.4237)
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_right" type="CollisionShape2D" parent="Collusion" unique_id=2035844305]
+position = Vector2(962.1189, 19.903698)
+rotation = -1.5707964
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collusion" unique_id=1859048305]
+polygon = PackedVector2Array(-962.4398, 382.02246, -278.97272, 387.47992, -262.6003, 389.4061, -246.54895, 392.61636, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+
+[node name="MockUp01" type="Sprite2D" parent="." unique_id=1256646608]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+texture = ExtResource("1_jirdo")
+
+[node name="Area2D" type="Area2D" parent="MockUp01" unique_id=1091894565]
+script = SubResource("GDScript_tlwt5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MockUp01/Area2D" unique_id=2129829157]
+polygon = PackedVector2Array(377.52805, 293.73996, 186.51682, 376.88605, 188.44302, 505.29694, 391.97427, 505.61795)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=399484526]
+
+[node name="box4" parent="." unique_id=859864415 instance=ExtResource("2_bt44k")]
+position = Vector2(2501, 544)
+scale = Vector2(0.625, 0.625)
+
+[node name="box" parent="." unique_id=267553855 instance=ExtResource("2_bt44k")]
+position = Vector2(2666.0002, 792)
+scale = Vector2(0.625, 0.625)
+
+[node name="box3" parent="." unique_id=1256066137 instance=ExtResource("2_bt44k")]
+position = Vector2(2341, 794)
+scale = Vector2(0.625, 0.625)
+
+[node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_bt44k")]
+position = Vector2(-1279, 296)
+
+[connection signal="body_entered" from="MockUp01/Area2D" to="MockUp01/Area2D" method="_on_body_entered"]
