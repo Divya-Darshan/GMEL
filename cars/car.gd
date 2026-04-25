@@ -9,6 +9,10 @@ extends RigidBody2D
 @onready var car_camera: Camera2D = $Camera2D
 @onready var marker_2d: Marker2D = $Marker2D
 
+@onready var acc: AudioStreamPlayer2D = $acc
+@onready var idle: AudioStreamPlayer2D = $idle
+@onready var jump: AudioStreamPlayer2D = $jump
+
 var speed := 1200.0
 var jump_force := -800.0
 
@@ -44,13 +48,13 @@ func _ready() -> void:
 
 	car_camera.enabled = false
 
-	# 🔥 connect all breakable boxes
+	# connect breakable boxes
 	for box in get_tree().get_nodes_in_group("breakable"):
 		if box.has_signal("hit_object"):
 			box.hit_object.connect(_on_object_hit)
 
 
-# ✅ KEY INPUT (ENTER to enter/exit)
+# INPUT (ENTER to enter/exit)
 func _input(event):
 	if event.is_action_pressed("enter"):
 		if car_active:
@@ -58,6 +62,10 @@ func _input(event):
 		else:
 			enter_car()
 
+func play_jump_audio():
+	if jump.playing:
+		jump.stop() # restart cleanly
+	jump.play()
 
 func _process(delta):
 	update_camera_shake(delta)
@@ -65,19 +73,26 @@ func _process(delta):
 
 func _physics_process(delta: float) -> void:
 	if not car_active:
+		stop_all_sounds()
 		return
 
 	var dir := Input.get_axis("a", "d")
 
+	# === MOVEMENT ===
 	if dir != 0:
 		back_wheel.apply_torque_impulse(dir * speed * delta * 60.0)
 		front_wheel.apply_torque_impulse(dir * speed * delta * 60.0)
+
+	# === AUDIO CONTROL ===
+	update_engine_audio(dir)
 
 	# JUMP
 	if Input.is_action_just_pressed("jump"):
 		back_wheel.apply_impulse(Vector2(0, jump_force))
 		front_wheel.apply_impulse(Vector2(0, jump_force))
 		apply_impulse(Vector2(0, jump_force * 0.6))
+
+		play_jump_audio() # 🔊 ADD THIS
 
 	# FLOAT
 	if Input.is_action_pressed("ui_accept"):
@@ -87,6 +102,29 @@ func _physics_process(delta: float) -> void:
 			float_timer = float_interval
 	else:
 		float_timer = 0.0
+
+
+# === AUDIO LOGIC ===
+func update_engine_audio(dir: float):
+	if abs(dir) > 0.1:
+		# 🚗 MOVING → ACC SOUND
+		if not acc.playing:
+			acc.play()
+		if idle.playing:
+			idle.stop()
+	else:
+		# 🚗 IDLE → IDLE SOUND
+		if not idle.playing:
+			idle.play()
+		if acc.playing:
+			acc.stop()
+
+
+func stop_all_sounds():
+	if acc.playing:
+		acc.stop()
+	if idle.playing:
+		idle.stop()
 
 
 # PLAYER ENTER AREA
@@ -126,10 +164,15 @@ func enter_car():
 	enter.visible = false
 	exit.visible = true
 
+	# 🔊 start idle sound immediately
+	idle.play()
+
 
 # EXIT CAR
 func exit_car():
 	car_active = false
+
+	stop_all_sounds()
 
 	if player != null:
 		player.global_position = marker_2d.global_position
@@ -147,18 +190,16 @@ func exit_car():
 	exit.visible = false
 
 
-# === RECEIVE HIT FROM BOX ===
+# === CAMERA SHAKE ===
 func _on_object_hit(strength):
 	start_shake(strength)
 
 
-# === START SHAKE ===
 func start_shake(strength):
 	current_shake_power = shake_strength * clamp(strength, 0.5, 3.0)
 	shake_time = shake_duration
 
 
-# === SHAKE UPDATE ===
 func update_camera_shake(delta):
 	if not car_camera.enabled:
 		return

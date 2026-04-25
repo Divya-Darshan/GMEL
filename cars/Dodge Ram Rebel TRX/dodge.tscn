@@ -7,6 +7,7 @@
 [ext_resource type="FontFile" uid="uid://bxx18m043yqw7" path="res://Font/Web Open Font Format (.woff)/Kaph-Italic.woff" id="5_xw2pi"]
 [ext_resource type="AudioStream" uid="uid://cqjqa47dmrkm5" path="res://sfx/eng_idle.mp3" id="6_ddl1c"]
 [ext_resource type="AudioStream" uid="uid://c657recnt7d08" path="res://sfx/eng_acc.mp3" id="7_5uil5"]
+[ext_resource type="AudioStream" uid="uid://dm2vvsw34xr0n" path="res://sfx/car_jump.wav" id="8_dukep"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cslfh"]
 
@@ -131,6 +132,9 @@ autoplay = true
 
 [node name="acc" type="AudioStreamPlayer2D" parent="." unique_id=1607897738]
 stream = ExtResource("7_5uil5")
+
+[node name="jump" type="AudioStreamPlayer2D" parent="." unique_id=533954652]
+stream = ExtResource("8_dukep")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
