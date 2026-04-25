@@ -40,7 +40,6 @@ const FALL_GRAVITY: float = 2800.0
 @onready var cpu_particles_2d: CPUParticles2D = $CPUParticles2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var surprise: Sprite2D = $Surprise
-@onready var walk_sfx: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var jump_sfx: AudioStreamPlayer2D = $AudioStreamPlayer2D2
 
 var current_animation: String = \"idle\"
@@ -98,13 +97,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	# === WALK SOUND CONTROL ===
-	if is_on_floor() and abs(velocity.x) > 10.0:
-		if not walk_sfx.playing:
-			walk_sfx.play()
-	else:
-		if walk_sfx.playing:
-			walk_sfx.stop()
+
 
 	# === LAND DETECT ===
 	if was_on_floor == false and is_on_floor() == true:
