@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ceq8btvfim8hi" path="res://char/jump-2_256.png" id="3_tdjx7"]
 [ext_resource type="Texture2D" uid="uid://bmkdytquedmrj" path="res://char/walk-2_256.png" id="4_n32fl"]
 [ext_resource type="Texture2D" uid="uid://c8lgsj3k5ylh8" path="res://char/surprise-2_256.png" id="6_gp2u4"]
+[ext_resource type="AudioStream" uid="uid://d3bphdsoovsf4" path="res://sfx/walk.wav" id="7_n32fl"]
 
 [sub_resource type="GDScript" id="GDScript_fj7yv"]
 script/source = "extends CharacterBody2D
@@ -38,6 +39,7 @@ const FALL_GRAVITY: float = 2800.0
 @onready var cpu_particles_2d: CPUParticles2D = $CPUParticles2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var surprise: Sprite2D = $Surprise
+@onready var walk_sfx: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var current_animation: String = \"idle\"
 var was_on_floor: bool = false
@@ -57,14 +59,14 @@ func _ready() -> void:
 
 	cpu_particles_2d.direction = Vector2(0.0, -1.0)
 	cpu_particles_2d.gravity = Vector2(0.0, -20.0)
-	
-func  player():
+
+
+func player():
 	pass
-	
+
 func sur():
 	surprise.trigger()
-	
-	
+
 
 func _physics_process(delta: float) -> void:
 	idle_time += delta
@@ -72,9 +74,14 @@ func _physics_process(delta: float) -> void:
 	var direction: float = Input.get_axis(\"a\", \"d\")
 	var on_floor_before_move: bool = is_on_floor()
 
+	# === JUMP ===
 	if Input.is_action_just_pressed(\"jump\") and on_floor_before_move:
 		velocity.y = JUMP_VELOCITY
 		jump_stretch_time = JUMP_DURATION
+		
+		# 🔊 ADD JUMP SOUND HERE
+		# Example:
+		# jump_sfx.play()
 
 	if not on_floor_before_move:
 		if velocity.y > 0.0:
@@ -82,6 +89,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.y += GRAVITY * delta
 
+	# === MOVEMENT ===
 	if direction != 0.0:
 		var accel: float = ACCEL if on_floor_before_move else AIR_ACCEL
 		velocity.x = move_toward(velocity.x, direction * MAX_SPEED, accel * delta)
@@ -91,6 +99,15 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+	# === WALK SOUND CONTROL ===
+	if is_on_floor() and abs(velocity.x) > 10.0:
+		if not walk_sfx.playing:
+			walk_sfx.play()
+	else:
+		if walk_sfx.playing:
+			walk_sfx.stop()
+
+	# === LAND DETECT ===
 	if was_on_floor == false and is_on_floor() == true:
 		land_squash_time = LAND_DURATION
 
@@ -99,6 +116,7 @@ func _physics_process(delta: float) -> void:
 	update_particles()
 
 	was_on_floor = is_on_floor()
+
 
 func update_animation(direction: float, delta: float) -> void:
 	var target_animation: String = \"idle\"
@@ -117,6 +135,7 @@ func update_animation(direction: float, delta: float) -> void:
 	else:
 		move_time = 0.0
 
+
 func update_squash(direction: float, delta: float) -> void:
 	var target_scale: Vector2 = Vector2.ONE
 
@@ -124,6 +143,7 @@ func update_squash(direction: float, delta: float) -> void:
 		var step: float = sin(move_time * MOVE_STRETCH_SPEED)
 		var stretch: float = abs(step) * MOVE_STRETCH_AMOUNT
 		target_scale = Vector2(1.0 + stretch, 1.0 - stretch * 0.8)
+
 	elif jump_stretch_time > 0.0:
 		jump_stretch_time -= delta
 		var t: float = clamp(jump_stretch_time / JUMP_DURATION, 0.0, 1.0)
@@ -131,6 +151,7 @@ func update_squash(direction: float, delta: float) -> void:
 			1.0 + JUMP_STRETCH_AMOUNT * (1.0 - t),
 			1.0 - JUMP_STRETCH_AMOUNT * (1.0 - t)
 		)
+
 	elif land_squash_time > 0.0:
 		land_squash_time -= delta
 		var t: float = clamp(land_squash_time / LAND_DURATION, 0.0, 1.0)
@@ -138,11 +159,13 @@ func update_squash(direction: float, delta: float) -> void:
 			1.0 - LAND_SQUASH_AMOUNT * (1.0 - t),
 			1.0 + LAND_SQUASH_AMOUNT * (1.0 - t)
 		)
+
 	elif is_on_floor() and abs(velocity.x) < 1.0 and direction == 0.0:
 		var squash: float = sin(idle_time * IDLE_SPEED) * IDLE_SQUASH_AMOUNT
 		target_scale = Vector2(1.0 - squash, 1.0 + squash)
 
 	animated_sprite_2d.scale = animated_sprite_2d.scale.lerp(target_scale, SCALE_LERP_SPEED * delta)
+
 
 func update_particles() -> void:
 	if is_on_floor() and abs(velocity.x) > 1.0:
@@ -343,3 +366,7 @@ texture = ExtResource("6_gp2u4")
 region_enabled = true
 region_rect = Rect2(2048.9956, -0.13417053, 251.59302, 503.3509)
 script = SubResource("GDScript_tdjx7")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=978916525]
+stream = ExtResource("7_n32fl")
+pitch_scale = 1.14
