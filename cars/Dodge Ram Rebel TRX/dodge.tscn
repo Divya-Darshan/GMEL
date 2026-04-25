@@ -4,7 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://cogll4hsoi4cn" path="res://cars/Dodge Ram Rebel TRX/car-body.png" id="1_kwffn"]
 [ext_resource type="Texture2D" uid="uid://d3u1ehwiqo5xj" path="res://cars/Dodge Ram Rebel TRX/car-wheel.png" id="2_1d1nf"]
 [ext_resource type="Texture2D" uid="uid://ba6wgwxasncml" path="res://ui/b_1.png" id="4_xw2pi"]
-[ext_resource type="FontFile" uid="uid://bxx18m043yqw7" path="res://Kaph_Font_1_20/Web Open Font Format (.woff)/Kaph-Italic.woff" id="5_xw2pi"]
+[ext_resource type="FontFile" uid="uid://bxx18m043yqw7" path="res://Font/Web Open Font Format (.woff)/Kaph-Italic.woff" id="5_xw2pi"]
+[ext_resource type="AudioStream" uid="uid://cqjqa47dmrkm5" path="res://sfx/eng_idle.mp3" id="6_ddl1c"]
+[ext_resource type="AudioStream" uid="uid://c657recnt7d08" path="res://sfx/eng_acc.mp3" id="7_5uil5"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cslfh"]
 
@@ -122,6 +124,13 @@ limit_bottom = 1209
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1150261699]
 position = Vector2(772, -2)
+
+[node name="idle" type="AudioStreamPlayer2D" parent="." unique_id=208737493]
+stream = ExtResource("6_ddl1c")
+autoplay = true
+
+[node name="acc" type="AudioStreamPlayer2D" parent="." unique_id=1607897738]
+stream = ExtResource("7_5uil5")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
