@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://cthmtpfg6u8nm"]
+
+[ext_resource type="Texture2D" uid="uid://coahgarjvtnno" path="res://map/Social/MockUp-01.png" id="1_gew73"]
+[ext_resource type="PackedScene" uid="uid://cgoxenu3igl6p" path="res://ui/box/box.tscn" id="2_bmgug"]
+[ext_resource type="PackedScene" uid="uid://bxb00sonenkqv" path="res://cars/Dodge Ram Rebel TRX/dodge.tscn" id="3_20opy"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_tlwt5"]
+
+[node name="level3" type="Node2D" unique_id=331946473]
+
+[node name="Collusion" type="StaticBody2D" parent="." unique_id=294229521]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+
+[node name="border_lerft" type="CollisionShape2D" parent="Collusion" unique_id=1701470035]
+position = Vector2(-963.72394, -32.423748)
+rotation = 1.5714304
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_top" type="CollisionShape2D" parent="Collusion" unique_id=976893766]
+position = Vector2(-20.8667, -627.28735)
+rotation = -3.1322622
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_bottom" type="CollisionShape2D" parent="Collusion" unique_id=745183121]
+position = Vector2(-52.327454, 632.4237)
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="border_right" type="CollisionShape2D" parent="Collusion" unique_id=820311326]
+position = Vector2(962.1189, 19.903698)
+rotation = -1.5707964
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_tlwt5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collusion" unique_id=1062938895]
+polygon = PackedVector2Array(-962.4398, 382.02246, -278.97272, 387.47992, -262.6003, 389.4061, -246.54895, 392.61636, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Collusion" unique_id=2070948082]
+position = Vector2(46.548954, 16.37239)
+polygon = PackedVector2Array(277.36758, -73.19423, 307.2231, -75.762436, 909.1492, -79.61476, 910.7544, 42.375595, 285.71426, 44.943817, 280.2568, 20.866776)
+one_way_collision = true
+
+[node name="MockUp01" type="Sprite2D" parent="." unique_id=390341943]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+texture = ExtResource("1_gew73")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=624205806]
+
+[node name="box4" parent="." unique_id=859864415 instance=ExtResource("2_bmgug")]
+position = Vector2(764, 327)
+rotation = 0.47122544
+scale = Vector2(0.625, 0.625)
+
+[node name="box9" parent="." unique_id=200717972 instance=ExtResource("2_bmgug")]
+position = Vector2(-476, 399)
+rotation = -0.0017960407
+scale = Vector2(0.625, 0.625)
+
+[node name="box6" parent="." unique_id=964951935 instance=ExtResource("2_bmgug")]
+position = Vector2(-108, 142)
+scale = Vector2(0.625, 0.625)
+
+[node name="box7" parent="." unique_id=827108127 instance=ExtResource("2_bmgug")]
+position = Vector2(3067.9998, -1030.0001)
+scale = Vector2(0.625, 0.625)
+
+[node name="box8" parent="." unique_id=1036383764 instance=ExtResource("2_bmgug")]
+position = Vector2(3156, -1281)
+scale = Vector2(0.625, 0.625)
+
+[node name="box5" parent="." unique_id=1595615586 instance=ExtResource("2_bmgug")]
+position = Vector2(-53, 392.00003)
+scale = Vector2(0.625, 0.625)
+
+[node name="box" parent="." unique_id=930568306 instance=ExtResource("2_bmgug")]
+position = Vector2(981.0001, 719.00006)
+rotation = 0.45118168
+scale = Vector2(0.625, 0.625)
+
+[node name="box3" parent="." unique_id=2082573473 instance=ExtResource("2_bmgug")]
+position = Vector2(698, 579)
+rotation = 0.47592965
+scale = Vector2(0.625, 0.625)
+
+[node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_20opy")]
+position = Vector2(3056, 685)
