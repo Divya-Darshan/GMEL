@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bmkdytquedmrj" path="res://char/walk-2_256.png" id="4_n32fl"]
 [ext_resource type="Texture2D" uid="uid://c8lgsj3k5ylh8" path="res://char/surprise-2_256.png" id="6_gp2u4"]
 [ext_resource type="AudioStream" uid="uid://d3bphdsoovsf4" path="res://sfx/walk.wav" id="7_n32fl"]
+[ext_resource type="AudioStream" uid="uid://xtfmpv3kwmrg" path="res://sfx/jump.wav" id="8_gp2u4"]
 
 [sub_resource type="GDScript" id="GDScript_fj7yv"]
 script/source = "extends CharacterBody2D
@@ -40,6 +41,7 @@ const FALL_GRAVITY: float = 2800.0
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var surprise: Sprite2D = $Surprise
 @onready var walk_sfx: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var jump_sfx: AudioStreamPlayer2D = $AudioStreamPlayer2D2
 
 var current_animation: String = \"idle\"
 var was_on_floor: bool = false
@@ -78,10 +80,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(\"jump\") and on_floor_before_move:
 		velocity.y = JUMP_VELOCITY
 		jump_stretch_time = JUMP_DURATION
-		
-		# 🔊 ADD JUMP SOUND HERE
-		# Example:
-		# jump_sfx.play()
+		jump_sfx.play()
 
 	if not on_floor_before_move:
 		if velocity.y > 0.0:
@@ -370,3 +369,6 @@ script = SubResource("GDScript_tdjx7")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=978916525]
 stream = ExtResource("7_n32fl")
 pitch_scale = 1.14
+
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="." unique_id=339842127]
+stream = ExtResource("8_gp2u4")
