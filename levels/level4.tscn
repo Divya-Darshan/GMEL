@@ -41,7 +41,7 @@ func next_level():
 
 	await fade_out()
 
-	get_tree().change_scene_to_file(\"res://levels/level_2.tscn\")
+	get_tree().change_scene_to_file(\"res://levels/end.tscn\")
 
 
 # 🔥 SMOOTH FADE OUT

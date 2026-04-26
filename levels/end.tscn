@@ -1,0 +1,253 @@
+[gd_scene format=3 uid="uid://c8u6nvgbry4qd"]
+
+[ext_resource type="Texture2D" uid="uid://coahgarjvtnno" path="res://map/Social/MockUp-01.png" id="1_ggwng"]
+[ext_resource type="PackedScene" uid="uid://cgoxenu3igl6p" path="res://ui/box/box.tscn" id="2_xpw7s"]
+[ext_resource type="PackedScene" uid="uid://bxb00sonenkqv" path="res://cars/Dodge Ram Rebel TRX/dodge.tscn" id="3_kf367"]
+[ext_resource type="PackedScene" uid="uid://c2f50chwb4hgp" path="res://char/player.tscn" id="4_ok7tn"]
+[ext_resource type="FontFile" uid="uid://bxx18m043yqw7" path="res://Font/Web Open Font Format (.woff)/Kaph-Italic.woff" id="5_h7ou2"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_86y11"]
+
+[node name="end" type="Node2D" unique_id=969366907]
+
+[node name="MockUp01" type="Sprite2D" parent="." unique_id=1896629948]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+texture = ExtResource("1_ggwng")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=573698021]
+
+[node name="Collusion" type="StaticBody2D" parent="." unique_id=1520096511]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+
+[node name="border_lerft" type="CollisionShape2D" parent="Collusion" unique_id=1633134048]
+position = Vector2(-963.72394, -32.423748)
+rotation = 1.5714304
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_86y11")
+
+[node name="border_top" type="CollisionShape2D" parent="Collusion" unique_id=406747340]
+position = Vector2(-20.8667, -627.28735)
+rotation = -3.1322622
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_86y11")
+
+[node name="border_bottom" type="CollisionShape2D" parent="Collusion" unique_id=829032325]
+position = Vector2(-52.327454, 632.4237)
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_86y11")
+
+[node name="border_right" type="CollisionShape2D" parent="Collusion" unique_id=1850570841]
+position = Vector2(962.1189, 19.903698)
+rotation = -1.5707964
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_86y11")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collusion" unique_id=1250927809]
+polygon = PackedVector2Array(-962.4398, 382.02246, -278.97272, 387.47992, -262.6003, 389.4061, -246.54895, 392.61636, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Collusion" unique_id=1643803624]
+position = Vector2(46.548954, 16.37239)
+polygon = PackedVector2Array(277.36758, -73.19423, 307.2231, -75.762436, 909.1492, -79.61476, 910.7544, 42.375595, 285.71426, 44.943817, 280.2568, 20.866776)
+one_way_collision = true
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="Collusion" unique_id=1082373243]
+position = Vector2(46.548954, 16.37239)
+polygon = PackedVector2Array(-1005.4574, -597.43176, -756.3403, -470.94702, -302.72873, -466.77368, -302.72873, -338.68378, -1024.077, -333.22632)
+one_way_collision = true
+
+[node name="carn" type="CollisionPolygon2D" parent="Collusion" unique_id=33569255]
+position = Vector2(-356.3403, 333.359)
+scale = Vector2(6.153644, 7.789826)
+polygon = PackedVector2Array(-43.821663, -4.921155, 47.36913, -6.445966, 48.725513, -4.7975216, 47.995155, -3.2314997, 47.995155, -0.5115671, 1.8780713, -0.3467226, -0.20867458, 6.6591644, -47.212624, 7.0712757)
+one_way_collision = true
+
+[node name="box3" parent="." unique_id=859864415 instance=ExtResource("2_xpw7s")]
+position = Vector2(1889, 760)
+scale = Vector2(0.625, 0.625)
+
+[node name="box4" parent="." unique_id=1499094198 instance=ExtResource("2_xpw7s")]
+position = Vector2(1355, 755)
+scale = Vector2(0.625, 0.625)
+
+[node name="box5" parent="." unique_id=475609543 instance=ExtResource("2_xpw7s")]
+position = Vector2(2157, 767)
+scale = Vector2(0.625, 0.625)
+
+[node name="box6" parent="." unique_id=1115845929 instance=ExtResource("2_xpw7s")]
+position = Vector2(1623, 762)
+scale = Vector2(0.625, 0.625)
+
+[node name="box7" parent="." unique_id=1304448213 instance=ExtResource("2_xpw7s")]
+position = Vector2(2155, 514)
+scale = Vector2(0.625, 0.625)
+
+[node name="box8" parent="." unique_id=835157477 instance=ExtResource("2_xpw7s")]
+position = Vector2(1621, 509)
+scale = Vector2(0.625, 0.625)
+
+[node name="box9" parent="." unique_id=1647153998 instance=ExtResource("2_xpw7s")]
+position = Vector2(1895, 502)
+scale = Vector2(0.625, 0.625)
+
+[node name="box10" parent="." unique_id=984143019 instance=ExtResource("2_xpw7s")]
+position = Vector2(1361, 497)
+scale = Vector2(0.625, 0.625)
+
+[node name="box11" parent="." unique_id=254084040 instance=ExtResource("2_xpw7s")]
+position = Vector2(1898, 229.00003)
+scale = Vector2(0.625, 0.625)
+
+[node name="box12" parent="." unique_id=38605457 instance=ExtResource("2_xpw7s")]
+position = Vector2(1364, 224.00003)
+scale = Vector2(0.625, 0.625)
+
+[node name="box13" parent="." unique_id=1568656480 instance=ExtResource("2_xpw7s")]
+position = Vector2(2158, 232)
+scale = Vector2(0.625, 0.625)
+
+[node name="box14" parent="." unique_id=395960050 instance=ExtResource("2_xpw7s")]
+position = Vector2(1624, 227)
+scale = Vector2(0.625, 0.625)
+
+[node name="box15" parent="." unique_id=1034325728 instance=ExtResource("2_xpw7s")]
+position = Vector2(2158, -34.99997)
+scale = Vector2(0.625, 0.625)
+
+[node name="box16" parent="." unique_id=1850415722 instance=ExtResource("2_xpw7s")]
+position = Vector2(1624, -39.99997)
+scale = Vector2(0.625, 0.625)
+
+[node name="box17" parent="." unique_id=481240155 instance=ExtResource("2_xpw7s")]
+position = Vector2(1888, -35)
+scale = Vector2(0.625, 0.625)
+
+[node name="box18" parent="." unique_id=1173491448 instance=ExtResource("2_xpw7s")]
+position = Vector2(1354, -40)
+scale = Vector2(0.625, 0.625)
+
+[node name="box19" parent="." unique_id=1852507230 instance=ExtResource("2_xpw7s")]
+position = Vector2(1875, -310.99997)
+scale = Vector2(0.625, 0.625)
+
+[node name="box20" parent="." unique_id=1985521048 instance=ExtResource("2_xpw7s")]
+position = Vector2(1341, -315.99997)
+scale = Vector2(0.625, 0.625)
+
+[node name="box21" parent="." unique_id=1607113903 instance=ExtResource("2_xpw7s")]
+position = Vector2(2164, -314)
+scale = Vector2(0.625, 0.625)
+
+[node name="box22" parent="." unique_id=570974101 instance=ExtResource("2_xpw7s")]
+position = Vector2(1630, -319)
+scale = Vector2(0.625, 0.625)
+
+[node name="box23" parent="." unique_id=390499050 instance=ExtResource("2_xpw7s")]
+position = Vector2(2961, -301)
+scale = Vector2(0.625, 0.625)
+
+[node name="box24" parent="." unique_id=141128386 instance=ExtResource("2_xpw7s")]
+position = Vector2(2427, -306)
+scale = Vector2(0.625, 0.625)
+
+[node name="box25" parent="." unique_id=1490315723 instance=ExtResource("2_xpw7s")]
+position = Vector2(2945, -25.00003)
+scale = Vector2(0.625, 0.625)
+
+[node name="box26" parent="." unique_id=892018981 instance=ExtResource("2_xpw7s")]
+position = Vector2(2411, -30.00003)
+scale = Vector2(0.625, 0.625)
+
+[node name="box27" parent="." unique_id=122731653 instance=ExtResource("2_xpw7s")]
+position = Vector2(2959, 257.99997)
+scale = Vector2(0.625, 0.625)
+
+[node name="box28" parent="." unique_id=1911083610 instance=ExtResource("2_xpw7s")]
+position = Vector2(2425, 252.99997)
+scale = Vector2(0.625, 0.625)
+
+[node name="box29" parent="." unique_id=1187827776 instance=ExtResource("2_xpw7s")]
+position = Vector2(2946, 531)
+scale = Vector2(0.625, 0.625)
+
+[node name="box30" parent="." unique_id=1992581302 instance=ExtResource("2_xpw7s")]
+position = Vector2(2412, 526)
+scale = Vector2(0.625, 0.625)
+
+[node name="box31" parent="." unique_id=937328450 instance=ExtResource("2_xpw7s")]
+position = Vector2(2952, 788)
+scale = Vector2(0.625, 0.625)
+
+[node name="box32" parent="." unique_id=37940337 instance=ExtResource("2_xpw7s")]
+position = Vector2(2418, 783)
+scale = Vector2(0.625, 0.625)
+
+[node name="box33" parent="." unique_id=627509610 instance=ExtResource("2_xpw7s")]
+position = Vector2(3212, 782)
+scale = Vector2(0.625, 0.625)
+
+[node name="box34" parent="." unique_id=240255847 instance=ExtResource("2_xpw7s")]
+position = Vector2(2678, 777)
+scale = Vector2(0.625, 0.625)
+
+[node name="box35" parent="." unique_id=791199558 instance=ExtResource("2_xpw7s")]
+position = Vector2(3209, 531)
+scale = Vector2(0.625, 0.625)
+
+[node name="box36" parent="." unique_id=236238928 instance=ExtResource("2_xpw7s")]
+position = Vector2(2675, 526)
+scale = Vector2(0.625, 0.625)
+
+[node name="box37" parent="." unique_id=1657760814 instance=ExtResource("2_xpw7s")]
+position = Vector2(3212, 258.00003)
+scale = Vector2(0.625, 0.625)
+
+[node name="box38" parent="." unique_id=1717271500 instance=ExtResource("2_xpw7s")]
+position = Vector2(2678, 253.00003)
+scale = Vector2(0.625, 0.625)
+
+[node name="box39" parent="." unique_id=1096371031 instance=ExtResource("2_xpw7s")]
+position = Vector2(3206, -14.9999695)
+scale = Vector2(0.625, 0.625)
+
+[node name="box40" parent="." unique_id=1579290306 instance=ExtResource("2_xpw7s")]
+position = Vector2(2672, -19.99997)
+scale = Vector2(0.625, 0.625)
+
+[node name="box41" parent="." unique_id=105171583 instance=ExtResource("2_xpw7s")]
+position = Vector2(3219, -288)
+scale = Vector2(0.625, 0.625)
+
+[node name="box42" parent="." unique_id=1398438900 instance=ExtResource("2_xpw7s")]
+position = Vector2(2685, -293)
+scale = Vector2(0.625, 0.625)
+
+[node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_kf367")]
+position = Vector2(360, -37)
+
+[node name="player" parent="." unique_id=666402882 instance=ExtResource("4_ok7tn")]
+position = Vector2(-1588, 181)
+
+[node name="fade" type="ColorRect" parent="." unique_id=1946136067]
+visible = false
+offset_left = -4052.0
+offset_top = -4469.0
+offset_right = -4012.0
+offset_bottom = -4429.0
+scale = Vector2(245.67998, 191.03459)
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="." unique_id=131623381]
+offset_left = -909.0
+offset_top = 201.0
+offset_right = 1019.0
+offset_bottom = 572.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.8407855, 3.917843e-05, 0.62200904, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_h7ou2")
+theme_override_font_sizes/font_size = 161
+text = "Thank you for 
+playing!!!"
+uppercase = true
