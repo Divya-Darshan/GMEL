@@ -11,15 +11,51 @@
 [sub_resource type="GDScript" id="GDScript_ep78u"]
 script/source = "extends Node2D
 
+@onready var fade: ColorRect = $fade
 
-# Called when the node enters the scene tree for the first time.
+var total_boxes := 0
+var destroyed_boxes := 0
+
+
 func _ready() -> void:
-	pass # Replace with function body.
+	# start transparent
+	fade.modulate.a = 0.0
+	fade.visible = true
+
+	var boxes = get_tree().get_nodes_in_group(\"breakable\")
+	total_boxes = boxes.size()
+
+	for box in boxes:
+		box.tree_exited.connect(_on_box_removed)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _on_box_removed():
+	destroyed_boxes += 1
+
+	if destroyed_boxes >= total_boxes:
+		next_level()
+
+
+func next_level():
+	print(\"LEVEL COMPLETE\")
+
+	# small polish delay
+	await get_tree().create_timer(0.2).timeout
+
+	await fade_out()
+
+	get_tree().change_scene_to_file(\"res://levels/level_3.tscn\")
+
+
+# 🔥 SMOOTH FADE OUT
+func fade_out():
+	var t = create_tween()
+	t.set_trans(Tween.TRANS_SINE)
+	t.set_ease(Tween.EASE_IN_OUT)
+
+	t.tween_property(fade, \"modulate:a\", 1.0, 0.6)
+
+	await t.finished
 "
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_aqk2v"]
@@ -524,7 +560,7 @@ scale = Vector2(7.3193035, 7.3193035)
 shape = SubResource("WorldBoundaryShape2D_aqk2v")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collusion" unique_id=1332035745]
-polygon = PackedVector2Array(-962.4398, 382.02246, -278.97272, 387.47992, -262.6003, 389.4061, -246.54895, 392.61636, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+polygon = PackedVector2Array(-962.4398, 382.02246, -287.9615, 386.8379, -262.6003, 390.6902, -245.9069, 395.18457, -231.78171, 401.28412, -221.50883, 406.74158, -209.3098, 412.52005, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Collusion" unique_id=1098864732]
 position = Vector2(-0.32102966, 15.088282)
@@ -533,8 +569,9 @@ one_way_collision = true
 one_way_collision_margin = 128.0
 
 [node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Collusion" unique_id=1685074188]
-position = Vector2(46.548954, 16.37239)
+position = Vector2(45.264847, 12.841091)
 polygon = PackedVector2Array(277.36758, -73.19423, 307.2231, -75.762436, 909.1492, -79.61476, 910.7544, 42.375595, 285.71426, 44.943817, 280.2568, 20.866776)
+one_way_collision = true
 
 [node name="MockUp01" type="Sprite2D" parent="." unique_id=549825751]
 position = Vector2(1123, -666)
@@ -554,12 +591,16 @@ position = Vector2(2813, 542)
 scale = Vector2(0.625, 0.625)
 
 [node name="box6" parent="." unique_id=70310224 instance=ExtResource("2_dfjjl")]
-position = Vector2(3599.9998, -1046.9999)
-rotation = 0.82930684
+position = Vector2(3420.9998, -1017.00006)
+rotation = -0.0006712079
 scale = Vector2(0.625, 0.625)
 
 [node name="box5" parent="." unique_id=1600324155 instance=ExtResource("2_dfjjl")]
-position = Vector2(3283, -1004.0001)
+position = Vector2(3097, -1015.00006)
+scale = Vector2(0.625, 0.625)
+
+[node name="box7" parent="." unique_id=1979346855 instance=ExtResource("2_dfjjl")]
+position = Vector2(3782, -1006.0001)
 scale = Vector2(0.625, 0.625)
 
 [node name="box" parent="." unique_id=85120024 instance=ExtResource("2_dfjjl")]
@@ -574,12 +615,21 @@ scale = Vector2(0.625, 0.625)
 position = Vector2(-1279, 296)
 
 [node name="player" parent="." unique_id=666402882 instance=ExtResource("4_sd18g")]
-position = Vector2(-716, 146)
+position = Vector2(3447, -1507)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1380946628]
 position = Vector2(-10, 60)
 scale = Vector2(15, 15)
 tile_map_data = PackedByteArray("AAAFAP//AAAJAAYAAAAGAP7/AAAJAAYAAAAHAP3/AAAJAAYAAAADAP7/AAACAAcAAAAEAP7/AAADAAcAAAAEAP//AAADAAgAAAABAP//AAACAAcAAAACAP//AAADAAcAAAD//wAAAAACAAcAAAAAAAAAAAADAAcAAAAAAAEAAAADAAgAAAD9/wEAAAACAAcAAAD+/wEAAAADAAcAAAD+/wIAAAADAAgAAAD//wEAAAACAAgAAAABAAAAAAACAAgAAAADAP//AAACAAgAAAD9/wIAAAACAAgAAAACAAAAAAADAAgAAAA=")
 tile_set = SubResource("TileSet_pkg7o")
+
+[node name="fade" type="ColorRect" parent="." unique_id=1255003522]
+visible = false
+offset_left = -4052.0
+offset_top = -4469.0
+offset_right = -4012.0
+offset_bottom = -4429.0
+scale = Vector2(245.67998, 191.03459)
+color = Color(0, 0, 0, 1)
 
 [connection signal="body_entered" from="MockUp01/Area2D" to="MockUp01/Area2D" method="_on_body_entered"]

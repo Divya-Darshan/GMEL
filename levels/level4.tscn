@@ -1,0 +1,310 @@
+[gd_scene format=3 uid="uid://b36u0rh7s520j"]
+
+[ext_resource type="Texture2D" uid="uid://coahgarjvtnno" path="res://map/Social/MockUp-01.png" id="1_lpgdq"]
+[ext_resource type="PackedScene" uid="uid://cgoxenu3igl6p" path="res://ui/box/box.tscn" id="2_1jw75"]
+[ext_resource type="PackedScene" uid="uid://bxb00sonenkqv" path="res://cars/Dodge Ram Rebel TRX/dodge.tscn" id="3_8s3b3"]
+[ext_resource type="PackedScene" uid="uid://c2f50chwb4hgp" path="res://char/player.tscn" id="4_cc5tm"]
+
+[sub_resource type="GDScript" id="GDScript_1jw75"]
+script/source = "extends Node2D
+
+@onready var fade: ColorRect = $fade
+
+var total_boxes := 0
+var destroyed_boxes := 0
+
+
+func _ready() -> void:
+	# start transparent
+	fade.modulate.a = 0.0
+	fade.visible = true
+
+	var boxes = get_tree().get_nodes_in_group(\"breakable\")
+	total_boxes = boxes.size()
+
+	for box in boxes:
+		box.tree_exited.connect(_on_box_removed)
+
+
+func _on_box_removed():
+	destroyed_boxes += 1
+
+	if destroyed_boxes >= total_boxes:
+		next_level()
+
+
+func next_level():
+	print(\"LEVEL COMPLETE\")
+
+	# small polish delay
+	await get_tree().create_timer(0.2).timeout
+
+	await fade_out()
+
+	get_tree().change_scene_to_file(\"res://levels/level_2.tscn\")
+
+
+# 🔥 SMOOTH FADE OUT
+func fade_out():
+	var t = create_tween()
+	t.set_trans(Tween.TRANS_SINE)
+	t.set_ease(Tween.EASE_IN_OUT)
+
+	t.tween_property(fade, \"modulate:a\", 1.0, 0.6)
+
+	await t.finished
+"
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_mj76i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lpgdq"]
+
+[sub_resource type="GDScript" id="GDScript_lpgdq"]
+script/source = "extends Area2D
+
+@onready var carn: CollisionShape2D = $\"../Collusion/carn\"
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.has_method('player'):
+		carn.queue_free()
+		queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1jw75"]
+radius = 8.604461
+
+[node name="level4" type="Node2D" unique_id=824705740]
+script = SubResource("GDScript_1jw75")
+
+[node name="MockUp01" type="Sprite2D" parent="." unique_id=983134769]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+texture = ExtResource("1_lpgdq")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=109777176]
+
+[node name="Collusion" type="StaticBody2D" parent="." unique_id=1361097938]
+position = Vector2(1123, -666)
+scale = Vector2(3.115, 3.115)
+
+[node name="border_lerft" type="CollisionShape2D" parent="Collusion" unique_id=542762463]
+position = Vector2(-963.72394, -32.423748)
+rotation = 1.5714304
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_mj76i")
+
+[node name="border_top" type="CollisionShape2D" parent="Collusion" unique_id=1785241410]
+position = Vector2(-20.8667, -627.28735)
+rotation = -3.1322622
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_mj76i")
+
+[node name="border_bottom" type="CollisionShape2D" parent="Collusion" unique_id=1541791913]
+position = Vector2(-52.327454, 632.4237)
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_mj76i")
+
+[node name="border_right" type="CollisionShape2D" parent="Collusion" unique_id=2114692434]
+position = Vector2(962.1189, 19.903698)
+rotation = -1.5707964
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_mj76i")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collusion" unique_id=1122949559]
+polygon = PackedVector2Array(-962.4398, 382.02246, -278.97272, 387.47992, -262.6003, 389.4061, -246.54895, 392.61636, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Collusion" unique_id=1122264773]
+position = Vector2(46.548954, 16.37239)
+polygon = PackedVector2Array(277.36758, -73.19423, 307.2231, -75.762436, 909.1492, -79.61476, 910.7544, 42.375595, 285.71426, 44.943817, 280.2568, 20.866776)
+one_way_collision = true
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="Collusion" unique_id=1096596170]
+position = Vector2(46.548954, 16.37239)
+polygon = PackedVector2Array(-1005.4574, -597.43176, -756.3403, -470.94702, -302.72873, -466.77368, -302.72873, -338.68378, -1024.077, -333.22632)
+one_way_collision = true
+
+[node name="carn" type="CollisionShape2D" parent="Collusion" unique_id=178624331]
+position = Vector2(-328.73193, -527.4478)
+scale = Vector2(6.153645, 7.7898264)
+shape = SubResource("RectangleShape2D_lpgdq")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1957199759]
+script = SubResource("GDScript_lpgdq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1141287985]
+position = Vector2(128, -2364)
+scale = Vector2(66.65703, 66.65703)
+shape = SubResource("CircleShape2D_1jw75")
+
+[node name="box4" parent="." unique_id=859864415 instance=ExtResource("2_1jw75")]
+position = Vector2(764, 327)
+rotation = 0.47122544
+scale = Vector2(0.625, 0.625)
+
+[node name="box9" parent="." unique_id=1756357915 instance=ExtResource("2_1jw75")]
+position = Vector2(-476, 399)
+rotation = -0.0017960407
+scale = Vector2(0.625, 0.625)
+
+[node name="box6" parent="." unique_id=690887000 instance=ExtResource("2_1jw75")]
+position = Vector2(-108, 142)
+scale = Vector2(0.625, 0.625)
+
+[node name="box7" parent="." unique_id=1144438532 instance=ExtResource("2_1jw75")]
+position = Vector2(3067.9998, -1030.0001)
+scale = Vector2(0.625, 0.625)
+
+[node name="box8" parent="." unique_id=1991388690 instance=ExtResource("2_1jw75")]
+position = Vector2(3156, -1281)
+scale = Vector2(0.625, 0.625)
+
+[node name="box5" parent="." unique_id=2122897916 instance=ExtResource("2_1jw75")]
+position = Vector2(-53, 392.00003)
+scale = Vector2(0.625, 0.625)
+
+[node name="box" parent="." unique_id=1376228508 instance=ExtResource("2_1jw75")]
+position = Vector2(925.99994, 697)
+rotation = 0.45118168
+scale = Vector2(0.625, 0.625)
+
+[node name="box2" parent="." unique_id=1008720143 instance=ExtResource("2_1jw75")]
+position = Vector2(2071, 802.99994)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box26" parent="." unique_id=750789291 instance=ExtResource("2_1jw75")]
+position = Vector2(1617.9999, -421)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box27" parent="." unique_id=1529178200 instance=ExtResource("2_1jw75")]
+position = Vector2(2112, -136.00003)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box28" parent="." unique_id=387818868 instance=ExtResource("2_1jw75")]
+position = Vector2(2556, -420.99997)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box10" parent="." unique_id=1180737141 instance=ExtResource("2_1jw75")]
+position = Vector2(2566, 798)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box11" parent="." unique_id=940270766 instance=ExtResource("2_1jw75")]
+position = Vector2(2561, 545.0001)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box12" parent="." unique_id=899994983 instance=ExtResource("2_1jw75")]
+position = Vector2(3096.9998, 788)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box29" parent="." unique_id=611934761 instance=ExtResource("2_1jw75")]
+position = Vector2(3752, 791.00006)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box30" parent="." unique_id=127921794 instance=ExtResource("2_1jw75")]
+position = Vector2(3383.9998, 540)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box13" parent="." unique_id=748818472 instance=ExtResource("2_1jw75")]
+position = Vector2(3097, 530.0001)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box14" parent="." unique_id=809655933 instance=ExtResource("2_1jw75")]
+position = Vector2(3092.0002, 257.0001)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box15" parent="." unique_id=8888747 instance=ExtResource("2_1jw75")]
+position = Vector2(3709, -23.000008)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box23" parent="." unique_id=1695721053 instance=ExtResource("2_1jw75")]
+position = Vector2(3978, -293.99997)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box24" parent="." unique_id=866603747 instance=ExtResource("2_1jw75")]
+position = Vector2(3304.0002, -497)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box25" parent="." unique_id=510381896 instance=ExtResource("2_1jw75")]
+position = Vector2(3090.0005, -750)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box16" parent="." unique_id=1182705593 instance=ExtResource("2_1jw75")]
+position = Vector2(2826, 803.9999)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box17" parent="." unique_id=1237285178 instance=ExtResource("2_1jw75")]
+position = Vector2(3887, -1033)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box18" parent="." unique_id=127585246 instance=ExtResource("2_1jw75")]
+position = Vector2(2101.0005, -1023.00006)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box19" parent="." unique_id=1117603594 instance=ExtResource("2_1jw75")]
+position = Vector2(1930, -1291.9999)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box20" parent="." unique_id=1864246595 instance=ExtResource("2_1jw75")]
+position = Vector2(1416, -1604)
+rotation = 0.101226
+scale = Vector2(0.625, 0.625)
+
+[node name="box21" parent="." unique_id=405576820 instance=ExtResource("2_1jw75")]
+position = Vector2(927, -1792.0001)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box22" parent="." unique_id=493028116 instance=ExtResource("2_1jw75")]
+position = Vector2(463.00006, -2018)
+rotation = 0.0023366904
+scale = Vector2(0.625, 0.625)
+
+[node name="box3" parent="." unique_id=612716216 instance=ExtResource("2_1jw75")]
+position = Vector2(698, 579)
+rotation = 0.47592965
+scale = Vector2(0.625, 0.625)
+
+[node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_8s3b3")]
+position = Vector2(-603, -2295)
+
+[node name="player" parent="." unique_id=666402882 instance=ExtResource("4_cc5tm")]
+position = Vector2(677, -2121)
+
+[node name="fade" type="ColorRect" parent="." unique_id=509182834]
+visible = false
+offset_left = -4052.0
+offset_top = -4469.0
+offset_right = -4012.0
+offset_bottom = -4429.0
+scale = Vector2(245.67998, 191.03459)
+color = Color(0, 0, 0, 1)
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

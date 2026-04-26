@@ -3,10 +3,62 @@
 [ext_resource type="Texture2D" uid="uid://coahgarjvtnno" path="res://map/Social/MockUp-01.png" id="1_gew73"]
 [ext_resource type="PackedScene" uid="uid://cgoxenu3igl6p" path="res://ui/box/box.tscn" id="2_bmgug"]
 [ext_resource type="PackedScene" uid="uid://bxb00sonenkqv" path="res://cars/Dodge Ram Rebel TRX/dodge.tscn" id="3_20opy"]
+[ext_resource type="PackedScene" uid="uid://c2f50chwb4hgp" path="res://char/player.tscn" id="4_bmgug"]
+
+[sub_resource type="GDScript" id="GDScript_bmgug"]
+script/source = "extends Node2D
+
+@onready var fade: ColorRect = $fade
+
+var total_boxes := 0
+var destroyed_boxes := 0
+
+
+func _ready() -> void:
+	# start transparent
+	fade.modulate.a = 0.0
+	fade.visible = true
+
+	var boxes = get_tree().get_nodes_in_group(\"breakable\")
+	total_boxes = boxes.size()
+
+	for box in boxes:
+		box.tree_exited.connect(_on_box_removed)
+
+
+func _on_box_removed():
+	destroyed_boxes += 1
+
+	if destroyed_boxes >= total_boxes:
+		next_level()
+
+
+func next_level():
+	print(\"LEVEL COMPLETE\")
+
+	# small polish delay
+	await get_tree().create_timer(0.2).timeout
+
+	await fade_out()
+
+	get_tree().change_scene_to_file(\"res://levels/level4.tscn\")
+
+
+# 🔥 SMOOTH FADE OUT
+func fade_out():
+	var t = create_tween()
+	t.set_trans(Tween.TRANS_SINE)
+	t.set_ease(Tween.EASE_IN_OUT)
+
+	t.tween_property(fade, \"modulate:a\", 1.0, 0.6)
+
+	await t.finished
+"
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_tlwt5"]
 
 [node name="level3" type="Node2D" unique_id=331946473]
+script = SubResource("GDScript_bmgug")
 
 [node name="Collusion" type="StaticBody2D" parent="." unique_id=294229521]
 position = Vector2(1123, -666)
@@ -88,3 +140,15 @@ scale = Vector2(0.625, 0.625)
 
 [node name="Dodge" parent="." unique_id=264630696 instance=ExtResource("3_20opy")]
 position = Vector2(3056, 685)
+
+[node name="player" parent="." unique_id=666402882 instance=ExtResource("4_bmgug")]
+position = Vector2(294, 175)
+
+[node name="fade" type="ColorRect" parent="." unique_id=562296621]
+visible = false
+offset_left = -4052.0
+offset_top = -4469.0
+offset_right = -4012.0
+offset_bottom = -4429.0
+scale = Vector2(245.67998, 191.03459)
+color = Color(0, 0, 0, 1)
