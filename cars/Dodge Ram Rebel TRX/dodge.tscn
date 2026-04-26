@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://cqjqa47dmrkm5" path="res://sfx/eng_idle.mp3" id="6_ddl1c"]
 [ext_resource type="AudioStream" uid="uid://c657recnt7d08" path="res://sfx/eng_acc.mp3" id="7_5uil5"]
 [ext_resource type="AudioStream" uid="uid://dm2vvsw34xr0n" path="res://sfx/car_jump.wav" id="8_dukep"]
+[ext_resource type="AudioStream" uid="uid://2xqih2i41l8e" path="res://sfx/time_for_adventure.mp3" id="9_n3n17"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cslfh"]
 
@@ -135,6 +136,11 @@ stream = ExtResource("7_5uil5")
 
 [node name="jump" type="AudioStreamPlayer2D" parent="." unique_id=533954652]
 stream = ExtResource("8_dukep")
+
+[node name="main track" type="AudioStreamPlayer2D" parent="." unique_id=1267687267]
+stream = ExtResource("9_n3n17")
+autoplay = true
+parameters/looping = true
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

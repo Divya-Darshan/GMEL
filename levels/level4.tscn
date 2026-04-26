@@ -41,7 +41,7 @@ func next_level():
 
 	await fade_out()
 
-	get_tree().change_scene_to_file(\"res://levels/level_2.tscn\")
+	get_tree().change_scene_to_file(\"res://levels/end.tscn\")
 
 
 # 🔥 SMOOTH FADE OUT
@@ -218,7 +218,7 @@ rotation = 0.0023366904
 scale = Vector2(0.625, 0.625)
 
 [node name="box30" parent="." unique_id=127921794 instance=ExtResource("2_1jw75")]
-position = Vector2(3383.9998, 540)
+position = Vector2(3426.0002, 562)
 rotation = 0.0023366904
 scale = Vector2(0.625, 0.625)
 

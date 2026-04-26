@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://cptsuehqrv3pn"]
+
+[ext_resource type="Texture2D" uid="uid://coahgarjvtnno" path="res://map/Social/MockUp-01.png" id="1_bvm7p"]
+[ext_resource type="PackedScene" uid="uid://cgoxenu3igl6p" path="res://ui/box/box.tscn" id="2_2fskk"]
+[ext_resource type="Texture2D" uid="uid://ba6wgwxasncml" path="res://ui/b_1.png" id="3_2fskk"]
+[ext_resource type="Texture2D" uid="uid://dobphfesplbq6" path="res://cars/Dodge Ram Rebel TRX/car-full.png" id="3_gbx6r"]
+[ext_resource type="FontFile" uid="uid://bxx18m043yqw7" path="res://Font/Web Open Font Format (.woff)/Kaph-Italic.woff" id="4_6nun2"]
+[ext_resource type="Texture2D" uid="uid://d3ykkx76kbk5i" path="res://ui/b_3.png" id="4_tbhb4"]
+[ext_resource type="Texture2D" uid="uid://dfg4plcknq4sa" path="res://char/idle-2_256.png" id="7_tbhb4"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sq0xk"]
+
+[sub_resource type="GDScript" id="GDScript_6nun2"]
+script/source = "extends TextureButton
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+func _on_pressed() -> void:
+		get_tree().change_scene_to_file(\"res://world.tscn\")
+"
+
+[node name="menu" type="Node2D" unique_id=1854946313]
+
+[node name="Collusion" type="StaticBody2D" parent="." unique_id=1658366267]
+position = Vector2(1128.2206, -13.853027)
+scale = Vector2(1.7189797, 1.7189797)
+
+[node name="border_lerft" type="CollisionShape2D" parent="Collusion" unique_id=1896084424]
+position = Vector2(-963.72394, -32.423748)
+rotation = 1.5714304
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_sq0xk")
+
+[node name="border_top" type="CollisionShape2D" parent="Collusion" unique_id=724519632]
+position = Vector2(-20.8667, -627.28735)
+rotation = -3.1322622
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_sq0xk")
+
+[node name="border_bottom" type="CollisionShape2D" parent="Collusion" unique_id=443897363]
+position = Vector2(-52.327454, 632.4237)
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_sq0xk")
+
+[node name="border_right" type="CollisionShape2D" parent="Collusion" unique_id=132935321]
+position = Vector2(962.1189, 19.903698)
+rotation = -1.5707964
+scale = Vector2(7.3193035, 7.3193035)
+shape = SubResource("WorldBoundaryShape2D_sq0xk")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collusion" unique_id=1328738470]
+polygon = PackedVector2Array(-962.4398, 382.02246, -278.97272, 387.47992, -262.6003, 389.4061, -246.54895, 392.61636, -219.90369, 401.92615, -16.372406, 500.80255, -7.704651, 504.33386, 2.2471924, 504.33386, 19.903687, 504.97592, 961.15564, 512.3595, 961.7977, 634.99194, -965.65, 644.6228)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Collusion" unique_id=419259345]
+position = Vector2(46.548954, 16.37239)
+polygon = PackedVector2Array(277.36758, -73.19423, 307.2231, -75.762436, 909.1492, -79.61476, 910.7544, 42.375595, 285.71426, 44.943817, 280.2568, 20.866776)
+one_way_collision = true
+
+[node name="MockUp01" type="Sprite2D" parent="." unique_id=1492813625]
+position = Vector2(1128.2206, -13.853027)
+scale = Vector2(1.7189797, 1.7189797)
+texture = ExtResource("1_bvm7p")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=159261949]
+position = Vector2(5.220581, 652.147)
+scale = Vector2(0.5518394, 0.5518394)
+
+[node name="box4" parent="." unique_id=859864415 instance=ExtResource("2_2fskk")]
+position = Vector2(820, 301.99994)
+rotation = 0.47122544
+scale = Vector2(0.34489962, 0.34489962)
+
+[node name="box9" parent="." unique_id=627345946 instance=ExtResource("2_2fskk")]
+position = Vector2(-420, 374.00006)
+rotation = -0.0017960407
+scale = Vector2(0.34489962, 0.34489962)
+
+[node name="box6" parent="." unique_id=498315732 instance=ExtResource("2_2fskk")]
+position = Vector2(-52.000015, 117)
+scale = Vector2(0.34489962, 0.34489962)
+
+[node name="box5" parent="." unique_id=1669723729 instance=ExtResource("2_2fskk")]
+position = Vector2(2.9999847, 367)
+scale = Vector2(0.34489962, 0.34489962)
+
+[node name="box" parent="." unique_id=1589401929 instance=ExtResource("2_2fskk")]
+position = Vector2(1037.0001, 694)
+rotation = 0.45118168
+scale = Vector2(0.34489962, 0.34489962)
+
+[node name="box3" parent="." unique_id=1176833700 instance=ExtResource("2_2fskk")]
+position = Vector2(754, 554)
+rotation = 0.47592965
+scale = Vector2(0.34489962, 0.34489962)
+
+[node name="fade" type="ColorRect" parent="." unique_id=1552738385]
+visible = false
+offset_left = -4052.0
+offset_top = -4469.0
+offset_right = -4012.0
+offset_bottom = -4429.0
+scale = Vector2(245.67998, 191.03459)
+color = Color(0, 0, 0, 1)
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1680083087]
+offset_left = 1333.0
+offset_top = 54.0
+offset_right = 2136.0
+offset_bottom = 426.0
+scale = Vector2(0.38164884, 0.38164884)
+texture_normal = ExtResource("3_2fskk")
+texture_pressed = ExtResource("4_tbhb4")
+script = SubResource("GDScript_6nun2")
+
+[node name="Label" type="Label" parent="TextureButton" unique_id=488819044]
+layout_mode = 0
+offset_left = 128.39035
+offset_top = 89.08711
+offset_right = 2056.3904
+offset_bottom = 460.0871
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 3
+theme_override_constants/shadow_offset_x = -6
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 0
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/font = ExtResource("4_6nun2")
+theme_override_font_sizes/font_size = 161
+text = "play"
+uppercase = true
+
+[node name="CarFull" type="Sprite2D" parent="." unique_id=1629767419]
+position = Vector2(337.99997, 372.99997)
+rotation = -0.67776316
+texture = ExtResource("3_gbx6r")
+
+[node name="Label2" type="Label" parent="." unique_id=869791407]
+offset_left = 1213.0
+offset_top = 328.0
+offset_right = 5418.0
+offset_bottom = 3099.0
+scale = Vector2(0.19871709, 0.19871709)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -8
+theme_override_constants/shadow_offset_x = 29
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 0
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/font = ExtResource("4_6nun2")
+theme_override_font_sizes/font_size = 161
+text = "			Controls
+
+Player:
+A / D - Move left / right
+SPACE - Jump
+		
+Car:
+ENTER - Enter / Exit car
+A / D - Drive
+SPACE - Jump
+
+note:
+Yes, the car can
+also jump :D "
+uppercase = true
+
+[node name="Idle2256" type="Sprite2D" parent="." unique_id=215711687]
+position = Vector2(872.00006, 120.00002)
+rotation = -0.85343176
+scale = Vector2(0.64120823, 0.64120823)
+texture = ExtResource("7_tbhb4")
+region_enabled = true
+region_rect = Rect2(0, 208, 256, 304)
+
+[connection signal="pressed" from="TextureButton" to="TextureButton" method="_on_pressed"]
