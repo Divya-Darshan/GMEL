@@ -213,12 +213,12 @@ rotation = 0.0023366904
 scale = Vector2(0.625, 0.625)
 
 [node name="box29" parent="." unique_id=611934761 instance=ExtResource("2_1jw75")]
-position = Vector2(3752, 791.00006)
+position = Vector2(3779.0002, 781)
 rotation = 0.0023366904
 scale = Vector2(0.625, 0.625)
 
 [node name="box30" parent="." unique_id=127921794 instance=ExtResource("2_1jw75")]
-position = Vector2(3426.0002, 562)
+position = Vector2(3450, 516)
 rotation = 0.0023366904
 scale = Vector2(0.625, 0.625)
 
