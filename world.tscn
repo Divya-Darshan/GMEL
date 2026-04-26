@@ -1,10 +1,43 @@
 [gd_scene format=3 uid="uid://bstqchy3h1m6o"]
 
-[ext_resource type="PackedScene" uid="uid://cthmtpfg6u8nm" path="res://levels/level_3.tscn" id="1_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://c2f50chwb4hgp" path="res://char/player.tscn" id="2_fj7yv"]
+[ext_resource type="PackedScene" uid="uid://dwfr3qdqt5vka" path="res://levels/level_1.tscn" id="2_tlwt5"]
+
+[sub_resource type="GDScript" id="GDScript_fj7yv"]
+script/source = "extends Node2D
+
+var total_boxes := 0
+var destroyed_boxes := 0
+
+
+func _ready() -> void:
+	# count all boxes in group
+	var boxes = get_tree().get_nodes_in_group(\"breakable\")
+	total_boxes = boxes.size()
+
+	for box in boxes:
+		box.tree_exited.connect(_on_box_removed)
+
+
+func _on_box_removed():
+	destroyed_boxes += 1
+
+	print(\"Destroyed:\", destroyed_boxes, \"/\", total_boxes)
+
+	if destroyed_boxes >= total_boxes:
+		next_level()
+
+
+func next_level():
+	print(\"LEVEL COMPLETE\")
+
+	get_tree().change_scene_to_file(\"res://levels/level_2.tscn\")
+"
 
 [node name="world" type="Node2D" unique_id=1537951377]
 
-[node name="level3" parent="." unique_id=331946473 instance=ExtResource("1_fj7yv")]
+[node name="level1" parent="." unique_id=579676946 instance=ExtResource("2_tlwt5")]
+script = SubResource("GDScript_fj7yv")
 
 [node name="player" parent="." unique_id=666402882 instance=ExtResource("2_fj7yv")]
+position = Vector2(3426, 303)

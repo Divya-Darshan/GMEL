@@ -8,6 +8,20 @@
 [ext_resource type="Texture2D" uid="uid://b1cnptow63pyc" path="res://map/Assets/Props-01.png" id="6_hbb88"]
 [ext_resource type="Texture2D" uid="uid://wq20fj1svfu4" path="res://map/Assets/Buildings.png" id="7_wcjpl"]
 
+[sub_resource type="GDScript" id="GDScript_ep78u"]
+script/source = "extends Node2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_aqk2v"]
 
 [sub_resource type="GDScript" id="GDScript_pkg7o"]
@@ -480,6 +494,7 @@ sources/1 = SubResource("TileSetAtlasSource_ioo17")
 sources/2 = SubResource("TileSetAtlasSource_wse8f")
 
 [node name="level2" type="Node2D" unique_id=481916069]
+script = SubResource("GDScript_ep78u")
 
 [node name="Collusion" type="StaticBody2D" parent="." unique_id=1628638832]
 position = Vector2(1123, -666)

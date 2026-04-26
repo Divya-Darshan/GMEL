@@ -1,12 +1,15 @@
 [gd_scene format=3 uid="uid://cgoxenu3igl6p"]
 
 [ext_resource type="Texture2D" uid="uid://cy7utpht5os4o" path="res://ui/box/1.png" id="1_fys3n"]
+[ext_resource type="AudioStream" uid="uid://bliy8igu7h36b" path="res://sfx/box hit.wav" id="2_oy2pg"]
 
 [sub_resource type="GDScript" id="GDScript_fys3n"]
 script/source = "extends Node2D
 
 @onready var sprite: Sprite2D = $\"1\"
-@onready var static_body_2d = $StaticBody2D
+@onready var static_body_2d: StaticBody2D = $StaticBody2D
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
+
 signal hit_object(strength)
 
 # === SETTINGS ===
@@ -17,13 +20,15 @@ var explosion_strength := 1000.0
 var fall_gravity := 400.0
 var fade_speed := 1.0
 
+var destroy_delay := 0.8  # ⏱ time before removing box
+
 var pieces := []
 var broken := false
 
 
 func _ready() -> void:
 	randomize()
-
+	add_to_group(\"breakable\") # ✅ IMPORTANT
 
 
 func _process(delta: float) -> void:
@@ -33,23 +38,32 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.has_method(\"car\"):
+		audio_stream_player_2d.play()
 		if broken:
 			return
-		
-		# 🔥 get impact strength from car velocity
+
+		broken = true
+
+		# 🔥 impact strength for camera shake
 		var strength := 1.0
 		if body is RigidBody2D:
 			strength = body.linear_velocity.length() / 300.0
-		
-		break_sprite()
-		static_body_2d.queue_free()
 
-		emit_signal(\"hit_object\", strength)  # 🔥 send to car
+		break_sprite()
+
+		# remove collision instantly
+		if static_body_2d:
+			static_body_2d.queue_free()
+
+		emit_signal(\"hit_object\", strength)
+
+		# ⏱ remove full box after animation
+		await get_tree().create_timer(destroy_delay).timeout
+		queue_free()
 
 
 # === BREAK ===
 func break_sprite():
-	broken = true
 	sprite.visible = false
 
 	var tex = sprite.texture
@@ -79,7 +93,7 @@ func break_sprite():
 			p.position = sprite.position + offset
 			add_child(p)
 
-			# 🔥 RANDOM SPREAD SETUP
+			# 🔥 RANDOM SPREAD
 			var dir = Vector2(
 				randf_range(-1.0, 1.0),
 				randf_range(-1.2, -0.3)
@@ -109,7 +123,7 @@ func update_pieces(delta):
 
 		var vel = piece[\"vel\"]
 
-		# 🔥 sideways spread
+		# sideways drift
 		vel.x += piece[\"drift\"] * delta
 
 		# movement
@@ -156,5 +170,8 @@ shape = SubResource("RectangleShape2D_vt8vk")
 position = Vector2(-3, 34)
 scale = Vector2(19.82084, -19.336184)
 shape = SubResource("RectangleShape2D_j7qbe")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1958131670]
+stream = ExtResource("2_oy2pg")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_body_entered"]
