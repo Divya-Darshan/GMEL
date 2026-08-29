@@ -1,5 +1,3 @@
-# GMEL
-
 A fast-paced 2D arcade experience where you drive and smash everything in your path.
 
 ![Game Jam Event](https://img.itch.zone/aW1nLzI2NjY3NzYyLnBuZw==/original/6lQNhF.png)
